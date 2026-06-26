@@ -18,5 +18,6 @@
       <Button fx:id="searchbutton" layoutX="60.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" text="搜索" />
       <Button fx:id="insertbutton" layoutX="141.0" layoutY="14.0" mnemonicParsing="false" onAction="#insert" text="新增" />
       <Button fx:id="deletebutton" layoutX="504.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="删除" />
+      <Button fx:id="updatebutton" layoutX="213.0" layoutY="14.0" mnemonicParsing="false" onAction="#update" text="修改" />
    </children>
 </AnchorPane>

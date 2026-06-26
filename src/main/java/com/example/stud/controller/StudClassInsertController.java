@@ -24,6 +24,8 @@ public class StudClassInsertController {
     @FXML
     private Button saveButton;
 
+    public Runnable runnable=null;
+
     private StudClassDao studClassDao=new StudClassDao();
     @FXML
     void cancel(ActionEvent event) {
@@ -40,5 +42,9 @@ public class StudClassInsertController {
         studClass.setName(this.myclass.getText());
         System.out.println("待存储的数据"+studClass);
         studClassDao.insert(studClass);
+        if (runnable!=null){
+            runnable.run();
+        }
+
     }
 }

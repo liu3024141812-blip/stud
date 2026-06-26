@@ -44,14 +44,30 @@ public class StudClassController {
     @FXML
     private Button deletebutton;
 
+    @FXML
+    private Button updatebutton;
+
 
     private  StudClassDao studClassDao = new StudClassDao();
 
     @FXML
-    void delete(ActionEvent event) {
+    //删除
+    void delete(ActionEvent event) throws SQLException {
+        //获取选中的id
+ StudClass selectedItem =this.results.getSelectionModel().getSelectedItem();
+ //选中
+ if(selectedItem!=null){
+     studClassDao.delete(selectedItem.getId());
+     //自动点击搜索刷新页面
+     try {
+         this.search(null);
+     }catch (SQLException e){
+         throw new RuntimeException(e);
+     }
 
+ }
     }
-
+//进入增加界面
     @FXML
     void insert(ActionEvent event) throws IOException {
         System.out.println("new window");
@@ -63,18 +79,52 @@ public class StudClassController {
         Stage stage = new Stage();
         //scene相当于相框，将上述fxml文件加载到窗口
         stage.setScene(new Scene(root));
+        StudClassInsertController controller= loader.getController();
+        //帮用户点关闭
+        controller.runnable=()->{
+            stage.close();
+            System.out.println("保存后关闭对话框");
+
+            //帮用户点搜索
+          try {
+            this.search(null);
+          }catch (SQLException e){
+              throw new RuntimeException(e);
+          }
+        };
         //展示
         stage.showAndWait();
 
     }
 
     @FXML
+    void update(ActionEvent event) throws IOException {
+        System.out.println("进入修改界面");
+   FXMLLoader loader= new  FXMLLoader(this.getClass().getResource("/com/example/stud/stud-class-update.fxml"));
+        Parent root= loader.load();
+        //stage是fx的窗口window  开启一个新窗口
+        Stage stage = new Stage();
+        //scene相当于相框，将上述fxml文件加载到窗口
+        stage.setScene(new Scene(root));
+        stage.showAndWait();
+    }
+
+
+    //刷新
+    @FXML
     void search(ActionEvent event) throws SQLException {
         initTable();
         List<StudClass> studClasses = studClassDao.findAll();
         ObservableList<StudClass> observableList = FXCollections.observableList(studClasses);
         results.setItems(observableList);
+
+
     }
+    @FXML
+    void select(ActionEvent event) throws SQLException {
+
+    }
+
 
     private void initTable() {
         grade.setCellValueFactory(new PropertyValueFactory<>("grade"));

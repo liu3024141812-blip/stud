@@ -3,10 +3,7 @@ package com.example.stud.dao;
 import com.example.stud.entity.StudClass;
 import com.example.stud.util.DbUtil;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -56,7 +53,31 @@ public class StudClassDao {
     }
 
 //    删除
+    public int delete(Integer id) throws SQLException {
+        String sql="delete from stud_class where id=?";
+        Connection connection = DbUtil.getConnection();
+        PreparedStatement statement=connection.prepareStatement(sql);
+        statement.setInt(1, id);
+        int i=statement.executeUpdate();
+        return i;
+
+    }
 
 //    修改
+public int update(StudClass studClass) throws SQLException {
+        String sql="update stud_class set myclass=?,mymajor=?,grade=? where id=?";
+        Connection connection=DbUtil.getConnection();
+        PreparedStatement  statement= connection.prepareStatement(sql);
+    statement.setString(1,studClass.getName());
+    statement.setString(2,studClass.getMajor());
+    statement.setInt(3,studClass.getGrade());
+    statement.setInt(4,studClass.getId());
+    int i=statement.executeUpdate();
+    return i;
+
+}
+
+
+
 }
 
