@@ -7,15 +7,15 @@
 
 <AnchorPane prefHeight="394.0" prefWidth="604.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.StudClassController">
    <children>
-      <TableView fx:id="result" layoutX="60.0" layoutY="45.0" prefHeight="269.0" prefWidth="484.0">
+      <TableView fx:id="results" layoutX="60.0" layoutY="45.0" prefHeight="269.0" prefWidth="484.0">
         <columns>
           <TableColumn fx:id="cid" prefWidth="75.0" text="id" />
-            <TableColumn prefWidth="75.0" text="专业" />
-          <TableColumn fx:id="grader" prefWidth="75.0" text="年级" />
-            <TableColumn prefWidth="75.0" text="班级" />
+            <TableColumn fx:id="mymajor" prefWidth="75.0" text="专业" />
+          <TableColumn fx:id="grade" prefWidth="75.0" text="年级" />
+            <TableColumn fx:id="myclass" prefWidth="75.0" text="班级" />
         </columns>
       </TableView>
-      <Button layoutX="60.0" layoutY="14.0" mnemonicParsing="false" onAction="#query" text="Search" />
+      <Button layoutX="60.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" text="Search" />
       <Button layoutX="141.0" layoutY="14.0" mnemonicParsing="false" onAction="#insert" text="新增" />
    </children>
 </AnchorPane>
