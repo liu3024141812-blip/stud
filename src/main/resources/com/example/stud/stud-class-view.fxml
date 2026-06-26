@@ -15,7 +15,8 @@
             <TableColumn fx:id="myclass" prefWidth="75.0" text="班级" />
         </columns>
       </TableView>
-      <Button layoutX="60.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" text="Search" />
-      <Button layoutX="141.0" layoutY="14.0" mnemonicParsing="false" onAction="#insert" text="新增" />
+      <Button fx:id="searchbutton" layoutX="60.0" layoutY="14.0" mnemonicParsing="false" onAction="#search" text="搜索" />
+      <Button fx:id="insertbutton" layoutX="141.0" layoutY="14.0" mnemonicParsing="false" onAction="#insert" text="新增" />
+      <Button fx:id="deletebutton" layoutX="504.0" layoutY="14.0" mnemonicParsing="false" onAction="#delete" text="删除" />
    </children>
 </AnchorPane>
