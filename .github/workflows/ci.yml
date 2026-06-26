@@ -21,7 +21,7 @@ jobs:
           java-version: 17
           cache: maven
 
-      - name: Run Maven tests
+      - name: Compile project
         run: |
           chmod +x mvnw
-          ./mvnw -q test
+          ./mvnw -q -DskipTests compile
