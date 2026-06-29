@@ -74,5 +74,5 @@ public class StudClassDao {
         int i = statement.executeUpdate();
         return i;
     }
-    //
+    //测试
 }
