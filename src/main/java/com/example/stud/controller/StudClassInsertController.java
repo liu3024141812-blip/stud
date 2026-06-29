@@ -1,4 +1,5 @@
 package com.example.stud.controller;
+
 import com.example.stud.dao.StudClassDao;
 import com.example.stud.entity.StudClass;
 import javafx.event.ActionEvent;
@@ -24,27 +25,30 @@ public class StudClassInsertController {
     @FXML
     private Button saveButton;
 
-    public Runnable runnable=null;
+    public Runnable runnable = null;
 
-    private StudClassDao studClassDao=new StudClassDao();
+    private StudClassDao studClassDao = new StudClassDao();
+
     @FXML
     void cancel(ActionEvent event) {
-        System.out.println("取消成功");
+
     }
 
     @FXML
     void save(ActionEvent event) throws SQLException {
-        System.out.println("保存成功");
+        System.out.println("=--保存成功");
+        // 收集用户输入的数据，打包成一个实体类对象
         StudClass studClass = new StudClass();
         studClass.setId(0);
         studClass.setMajor(this.mymajor.getText());
-        studClass.setGrade( Integer.parseInt(grade.getText()));
+        studClass.setGrade(Integer.parseInt(this.grade.getText()));
         studClass.setName(this.myclass.getText());
-        System.out.println("待存储的数据"+studClass);
+        System.out.println("待存储的数据" + studClass);
+        // 把StudClass对象存储到数据库
         studClassDao.insert(studClass);
-        if (runnable!=null){
+        // stage.close();
+        if (runnable != null) {
             runnable.run();
         }
-
     }
 }

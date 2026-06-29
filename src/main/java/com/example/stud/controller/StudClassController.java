@@ -9,10 +9,10 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Button;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -47,89 +47,89 @@ public class StudClassController {
     @FXML
     private Button updatebutton;
 
+    private StudClassDao studClassDao = new StudClassDao();
 
-    private  StudClassDao studClassDao = new StudClassDao();
+    // 生命周期函数，自动运行
+    @FXML
+    public void initialize() throws SQLException {
+        System.out.println("自动运行");
+        System.out.println("自动运行2");
+        this.initTable();
+        this.search(null);
+    }
 
     @FXML
-    //删除
     void delete(ActionEvent event) throws SQLException {
-        //获取选中的id
- StudClass selectedItem =this.results.getSelectionModel().getSelectedItem();
- //选中
- if(selectedItem!=null){
-     studClassDao.delete(selectedItem.getId());
-     //自动点击搜索刷新页面
-     try {
-         this.search(null);
-     }catch (SQLException e){
-         throw new RuntimeException(e);
-     }
-
- }
+        System.out.println("将要删除");
+        StudClass selectedItem = this.results.getSelectionModel().getSelectedItem();
+        System.out.println(selectedItem);
+        if (selectedItem != null) {
+            studClassDao.delete(selectedItem.getId());
+        }
+        this.search(null);
     }
-//进入增加界面
+
     @FXML
     void insert(ActionEvent event) throws IOException {
-        System.out.println("new window");
-        //fxml文件从硬盘加载到内存 成为一幅画
-       FXMLLoader loader= new FXMLLoader(this.getClass().getResource("/com/example/stud/stud-class-insert.fxml"));
-//内存中的xml根节点
-        Parent root= loader.load();
-        //stage是fx的窗口window  开启一个新窗口
+        System.out.println("----打开新增窗口--");
+        // fxml文件从硬盘加载到内存，成为一幅画
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/stud-class-insert.fxml"));
+        // 内存中的xml文件根节点
+        Parent root = loader.load();
+        // stage是JavaFX中的窗口，scene相当于窗口中的画面
         Stage stage = new Stage();
-        //scene相当于相框，将上述fxml文件加载到窗口
         stage.setScene(new Scene(root));
-        StudClassInsertController controller= loader.getController();
-        //帮用户点关闭
-        controller.runnable=()->{
+        StudClassInsertController controller = loader.getController();
+        controller.runnable = () -> {
+            // 帮助用户点击关闭按钮
             stage.close();
             System.out.println("保存后关闭对话框");
-
-            //帮用户点搜索
-          try {
-            this.search(null);
-          }catch (SQLException e){
-              throw new RuntimeException(e);
-          }
+            // 帮助用户点击搜索按钮，刷新列表数据
+            try {
+                this.search(null);
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
         };
-        //展示
         stage.showAndWait();
-
     }
 
     @FXML
     void update(ActionEvent event) throws IOException {
-        System.out.println("进入修改界面");
-   FXMLLoader loader= new  FXMLLoader(this.getClass().getResource("/com/example/stud/stud-class-update.fxml"));
-        Parent root= loader.load();
-        //stage是fx的窗口window  开启一个新窗口
+        FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/stud-class-update.fxml"));
+        Parent root = loader.load();
         Stage stage = new Stage();
-        //scene相当于相框，将上述fxml文件加载到窗口
         stage.setScene(new Scene(root));
+        System.out.println("准备更新");
         stage.showAndWait();
     }
 
-
-    //刷新
     @FXML
     void search(ActionEvent event) throws SQLException {
-        initTable();
+        // this.initTable();
+        // 做假数据显示
+        // StudClass studClass = new StudClass();
+        // studClass.setId(1);
+        // studClass.setName("3班");
+        // studClass.setMajor("计科");
+        // studClass.setGrade(23);
+        // List studClasses = new ArrayList<>();
+        // studClasses.add(studClass);
+        // StudClassDao studClassDao = new StudClassDao();
         List<StudClass> studClasses = studClassDao.findAll();
         ObservableList<StudClass> observableList = FXCollections.observableList(studClasses);
-        results.setItems(observableList);
-
-
+        this.results.setItems(observableList);
     }
+
     @FXML
     void select(ActionEvent event) throws SQLException {
 
     }
 
-
     private void initTable() {
-        grade.setCellValueFactory(new PropertyValueFactory<>("grade"));
-        cid.setCellValueFactory(new PropertyValueFactory<>("id"));
-        myclass.setCellValueFactory(new PropertyValueFactory<>("name"));
-        mymajor.setCellValueFactory(new PropertyValueFactory<>("major"));
+        this.grade.setCellValueFactory(new PropertyValueFactory<>("grade"));
+        this.cid.setCellValueFactory(new PropertyValueFactory<>("id"));
+        this.myclass.setCellValueFactory(new PropertyValueFactory<>("name"));
+        this.mymajor.setCellValueFactory(new PropertyValueFactory<>("major"));
     }
 }
