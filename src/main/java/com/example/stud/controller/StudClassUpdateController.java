@@ -32,14 +32,16 @@ public class StudClassUpdateController {
 
     StudClassDao studClassDao = new StudClassDao();
 
+    public StudClass studClass = new StudClass();
+
     @FXML
     void cancel(ActionEvent event) {
 
     }
-
+public Runnable onUpdate;
     @FXML
     void update(ActionEvent event) throws SQLException {
-        this.cid.setText("4");
+    //    this.cid.setText("4");
         StudClass studClass = new StudClass();
         studClass.setId(Integer.valueOf(this.cid.getText()));
         studClass.setMajor(this.mymajor.getText());
@@ -47,5 +49,15 @@ public class StudClassUpdateController {
         studClass.setName(this.myclass.getText());
         System.out.println("将要更新:" + studClass);
         studClassDao.update(studClass);
+if(onUpdate!=null){
+    onUpdate.run();
+}
+
+    }
+    public void setItem(StudClass studClass){
+        this.cid.setText(String.valueOf(studClass.getId()));
+        this.mymajor.setText(studClass.getMajor());
+        this.grade.setText(String.valueOf(studClass.getGrade()));
+        this.myclass.setText(studClass.getName());
     }
 }
