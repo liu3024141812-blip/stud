@@ -1,8 +1,11 @@
 import com.example.stud.dao.StudClassDao;
+import com.example.stud.dao.StudentDao;
 import com.example.stud.entity.StudClass;
+import com.example.stud.entity.Student;
 import org.junit.jupiter.api.Test;
 
 import java.sql.SQLException;
+import java.util.List;
 
 public class DaoTest {
     @Test
@@ -22,5 +25,14 @@ public class DaoTest {
         studClass.setName("1班");
         studClass.setGrade(24);
         studClassDao.update(studClass);
+    }
+    @Test
+    public void test03(){
+        StudentDao studentDao = new StudentDao();
+        try {
+            List<Student> all= studentDao.findAll();
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
     }
 }
