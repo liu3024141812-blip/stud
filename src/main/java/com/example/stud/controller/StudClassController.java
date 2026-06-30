@@ -1,7 +1,8 @@
 package com.example.stud.controller;
 
-import com.example.stud.dao.StudClassDao;
 import com.example.stud.entity.StudClass;
+import com.example.stud.service.ServiceException;
+import com.example.stud.service.StudClassService;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -17,7 +18,6 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
-import java.sql.SQLException;
 import java.util.List;
 
 public class StudClassController {
@@ -48,29 +48,30 @@ public class StudClassController {
     @FXML
     private Button updatebutton;
 
-    private StudClassDao studClassDao = new StudClassDao();
+    private final StudClassService studClassService = new StudClassService();
 
     @FXML
-    public void initialize() throws SQLException {
-        System.out.println("自动运行");
-        System.out.println("自动运行2");
+    public void initialize() {
+
         this.initTable();
         this.search(null);
     }
 
     @FXML
-    void delete(ActionEvent event) throws SQLException {
+    void delete(ActionEvent event) {
         System.out.println("将要删除");
         StudClass selectedItem = this.results.getSelectionModel().getSelectedItem();
         System.out.println(selectedItem);
-        if (selectedItem==null) {
-            Alert alert =new Alert(Alert.AlertType.INFORMATION,"没有选中待删除的数据");
-            alert.showAndWait();
+        if (selectedItem == null) {
+            new Alert(Alert.AlertType.INFORMATION, "没有选中待删除的数据").showAndWait();
             return;
-
         }
-        studClassDao.delete(selectedItem.getId());
-        this.search(null);
+        try {
+            studClassService.delete(selectedItem.getId());
+            this.search(null);
+        } catch (ServiceException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+        }
     }
 
     @FXML
@@ -85,11 +86,7 @@ public class StudClassController {
         controller.runnable = () -> {
             stage.close();
             System.out.println("保存后关闭对话框");
-            try {
-                this.search(null);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            this.search(null);
         };
         stage.showAndWait();
     }
@@ -98,12 +95,11 @@ public class StudClassController {
     void update(ActionEvent event) throws IOException {
         StudClass selectedItem = this.results.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "未选择修改对象");
-            alert.showAndWait();
+            new Alert(Alert.AlertType.INFORMATION, "未选择修改对象").showAndWait();
             System.out.println("back");
             return;
         }
-        System.out.println("要修改的数据"+selectedItem);
+        System.out.println("要修改的数据" + selectedItem);
 
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/stud-class-update.fxml"));
         Parent root = loader.load();
@@ -113,26 +109,26 @@ public class StudClassController {
         StudClassUpdateController controller = loader.getController();
         controller.setItem(selectedItem);
 
-        controller.onUpdate=()->{
+        controller.onUpdate = () -> {
             stage.close();
-            try {
-                this.search(null);
-            } catch (SQLException e) {
-                throw new RuntimeException(e);
-            }
+            this.search(null);
         };
         stage.showAndWait();
     }
 
     @FXML
-    void search(ActionEvent event) throws SQLException {
-        List<StudClass> studClasses = studClassDao.findAll();
-        ObservableList<StudClass> observableList = FXCollections.observableList(studClasses);
-        this.results.setItems(observableList);
+    void search(ActionEvent event) {
+        try {
+            List<StudClass> studClasses = studClassService.findAll();
+            ObservableList<StudClass> observableList = FXCollections.observableList(studClasses);
+            this.results.setItems(observableList);
+        } catch (ServiceException e) {
+            new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
+        }
     }
 
     @FXML
-    void select(ActionEvent event) throws SQLException {
+    void select(ActionEvent event) {
 
     }
 

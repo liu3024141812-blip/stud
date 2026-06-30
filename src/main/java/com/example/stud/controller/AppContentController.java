@@ -43,26 +43,26 @@ public class AppContentController {
         Stage stage = (Stage) this.logoutButton.getScene().getWindow();
         stage.setScene(new Scene(root));
     }
-
+//进入班级管理页面
     @FXML
     void toclass(ActionEvent event) {
         System.out.println("路由跳转页面");
         this.navigateTo("/com/example/stud/stud-class-view.fxml");
     }
-
+//进入课程管理
     @FXML
     void tocourse(ActionEvent event) {
 
     }
-
+//进入成绩管理
     @FXML
     void toscore(ActionEvent event) {
 
     }
-
+//进入学生管理
     @FXML
     void tostudent(ActionEvent event) {
-
+        this.navigateTo("/com/example/stud/student-view.fxml");
     }
 
     public void navigateTo(String fxml) {
