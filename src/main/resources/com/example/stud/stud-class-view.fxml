@@ -5,10 +5,10 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.StudClassController">
+<AnchorPane prefHeight="360.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.StudClassController">
     <children>
-        <Button fx:id="searchbutton" layoutX="86.0" layoutY="37.0" mnemonicParsing="false" onAction="#search" text="搜索" />
-        <TableView fx:id="results" layoutX="87.0" layoutY="74.0" prefHeight="239.0" prefWidth="381.0">
+        <Button fx:id="searchbutton" layoutX="88.0" layoutY="27.0" mnemonicParsing="false" onAction="#search" prefHeight="35.0" prefWidth="57.0" text="搜索" />
+        <TableView fx:id="results" layoutX="79.0" layoutY="72.0" prefHeight="357.0" prefWidth="615.0">
             <columns>
                 <TableColumn fx:id="cid" prefWidth="75.0" text="Id" />
                 <TableColumn fx:id="grade" prefWidth="75.0" text="年级" />
@@ -16,8 +16,8 @@
                 <TableColumn fx:id="mymajor" prefWidth="75.0" text="专业" />
             </columns>
         </TableView>
-        <Button fx:id="insertbutton" layoutX="137.0" layoutY="37.0" mnemonicParsing="false" onAction="#insert" text="新增" />
-        <Button fx:id="deletebutton" layoutX="427.0" layoutY="37.0" mnemonicParsing="false" onAction="#delete" text="删除" />
-        <Button fx:id="updatebutton" layoutX="251.0" layoutY="37.0" mnemonicParsing="false" onAction="#update" text="修改" />
+        <Button fx:id="insertbutton" layoutX="176.0" layoutY="27.0" mnemonicParsing="false" onAction="#insert" prefHeight="35.0" prefWidth="57.0" text="新增" />
+        <Button fx:id="deletebutton" layoutX="616.0" layoutY="27.0" mnemonicParsing="false" onAction="#delete" prefHeight="35.0" prefWidth="64.0" text="删除" />
+        <Button fx:id="updatebutton" layoutX="277.0" layoutY="27.0" mnemonicParsing="false" onAction="#update" prefHeight="35.0" prefWidth="57.0" text="修改" />
     </children>
 </AnchorPane>
