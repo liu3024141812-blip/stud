@@ -52,12 +52,12 @@ public class AppContentController {
 //进入课程管理
     @FXML
     void tocourse(ActionEvent event) {
-
+        this.navigateTo("/com/example/stud/course-view.fxml");
     }
 //进入成绩管理
     @FXML
     void toscore(ActionEvent event) {
-
+        this.navigateTo("/com/example/stud/score-view.fxml");
     }
 //进入学生管理
     @FXML
