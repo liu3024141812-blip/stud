@@ -16,7 +16,8 @@ public class HelloApplication extends Application {
         FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("/com/example/stud/login.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
-        stage.setTitle("Hello!");
+        scene.getStylesheets().add(HelloApplication.class.getResource("/com/example/stud/app.css").toExternalForm());
+        stage.setTitle("学生管理系统");
         stage.setScene(scene);
         stage.show();
     }

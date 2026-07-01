@@ -1,23 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="360.0" prefWidth="525.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.StudClassController">
-    <children>
-        <Button fx:id="searchbutton" layoutX="88.0" layoutY="27.0" mnemonicParsing="false" onAction="#search" prefHeight="35.0" prefWidth="57.0" text="搜索" />
-        <TableView fx:id="results" layoutX="79.0" layoutY="72.0" prefHeight="357.0" prefWidth="615.0">
-            <columns>
-                <TableColumn fx:id="cid" prefWidth="75.0" text="Id" />
-                <TableColumn fx:id="grade" prefWidth="75.0" text="年级" />
-                <TableColumn fx:id="myclass" prefWidth="75.0" text="班级名称" />
-                <TableColumn fx:id="mymajor" prefWidth="75.0" text="专业" />
-            </columns>
-        </TableView>
-        <Button fx:id="insertbutton" layoutX="176.0" layoutY="27.0" mnemonicParsing="false" onAction="#insert" prefHeight="35.0" prefWidth="57.0" text="新增" />
-        <Button fx:id="deletebutton" layoutX="616.0" layoutY="27.0" mnemonicParsing="false" onAction="#delete" prefHeight="35.0" prefWidth="64.0" text="删除" />
-        <Button fx:id="updatebutton" layoutX="277.0" layoutY="27.0" mnemonicParsing="false" onAction="#update" prefHeight="35.0" prefWidth="57.0" text="修改" />
-    </children>
-</AnchorPane>
+<VBox spacing="18.0" styleClass="dashboard-page" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.StudClassController">
+   <children>
+      <VBox spacing="16.0" styleClass="card" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="18.0">
+               <children>
+                  <VBox minWidth="220.0">
+                     <children>
+                        <Label styleClass="section-title" text="班级管理" />
+                        <Label styleClass="section-note" text="维护年级、专业和班级基础资料" />
+                     </children>
+                  </VBox>
+                  <HBox styleClass="toolbar" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="keywordField" maxWidth="260.0" minWidth="150.0" onAction="#search" prefWidth="230.0" promptText="搜索年级、专业或班级" styleClass="table-search-field" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#search" styleClass="secondary-button" text="搜索" />
+                     </children>
+                  </HBox>
+                  <Region minWidth="8.0" HBox.hgrow="ALWAYS" />
+                  <HBox styleClass="toolbar">
+                     <children>
+                        <Button fx:id="searchbutton" mnemonicParsing="false" onAction="#query" styleClass="secondary-button" text="刷新" />
+                        <Button fx:id="insertbutton" mnemonicParsing="false" onAction="#insert" styleClass="primary-button" text="新增" />
+                        <Button fx:id="updatebutton" mnemonicParsing="false" onAction="#update" styleClass="secondary-button" text="修改" />
+                        <Button fx:id="deletebutton" mnemonicParsing="false" onAction="#delete" styleClass="danger-button" text="删除" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <TableView fx:id="results" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="cid" prefWidth="90.0" text="ID" />
+                  <TableColumn fx:id="grade" prefWidth="170.0" text="年级" />
+                  <TableColumn fx:id="myclass" prefWidth="220.0" text="班级名称" />
+                  <TableColumn fx:id="mymajor" prefWidth="220.0" text="专业" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
+   </children>
+</VBox>

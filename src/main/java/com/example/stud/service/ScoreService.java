@@ -33,7 +33,7 @@ public class ScoreService {
 
     public int update(Score score) {
         if (score.getId() == null) {
-            throw new ServiceException("修改成绩失败：ID 不能为空");
+            throw new ServiceException("修改成绩失败：ID不能为空");
         }
         validate(score);
         try {
@@ -45,7 +45,7 @@ public class ScoreService {
 
     public int delete(Integer id) {
         if (id == null) {
-            throw new ServiceException("删除成绩失败：ID 不能为空");
+            throw new ServiceException("删除成绩失败：ID不能为空");
         }
         try {
             return scoreDao.delete(id);

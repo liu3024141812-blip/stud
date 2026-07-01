@@ -1,23 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Priority?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
 
-<AnchorPane prefHeight="400.0" prefWidth="550.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.ScoreController">
+<VBox spacing="18.0" styleClass="dashboard-page" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.ScoreController">
    <children>
-      <Button fx:id="searchButton" layoutX="30.0" layoutY="27.0" mnemonicParsing="false" onAction="#search" text="搜索" />
-      <Button fx:id="insertButton" layoutX="90.0" layoutY="27.0" mnemonicParsing="false" onAction="#insert" text="新增" />
-      <Button fx:id="updateButton" layoutX="150.0" layoutY="27.0" mnemonicParsing="false" onAction="#update" text="修改" />
-      <Button fx:id="deleteButton" layoutX="460.0" layoutY="27.0" mnemonicParsing="false" onAction="#delete" text="删除" />
-      <TableView fx:id="results" layoutX="30.0" layoutY="72.0" prefHeight="322.0" prefWidth="490.0">
-        <columns>
-          <TableColumn fx:id="id" prefWidth="50.0" text="ID" />
-          <TableColumn fx:id="studentName" prefWidth="100.0" text="学生姓名" />
-          <TableColumn fx:id="courseName" prefWidth="160.0" text="课程名称" />
-          <TableColumn fx:id="score" prefWidth="100.0" text="考试成绩" />
-        </columns>
-      </TableView>
+      <VBox spacing="16.0" styleClass="card" VBox.vgrow="ALWAYS">
+         <children>
+            <HBox alignment="CENTER_LEFT" spacing="18.0">
+               <children>
+                  <VBox minWidth="220.0">
+                     <children>
+                        <Label styleClass="section-title" text="成绩管理" />
+                        <Label styleClass="section-note" text="维护学生与课程的考试成绩" />
+                     </children>
+                  </VBox>
+                  <HBox styleClass="toolbar" HBox.hgrow="ALWAYS">
+                     <children>
+                        <TextField fx:id="keywordField" maxWidth="260.0" minWidth="150.0" onAction="#search" prefWidth="230.0" promptText="搜索学生或课程" styleClass="table-search-field" HBox.hgrow="ALWAYS" />
+                        <Button mnemonicParsing="false" onAction="#search" styleClass="secondary-button" text="搜索" />
+                     </children>
+                  </HBox>
+                  <Region minWidth="8.0" HBox.hgrow="ALWAYS" />
+                  <HBox styleClass="toolbar">
+                     <children>
+                        <Button fx:id="searchButton" mnemonicParsing="false" onAction="#query" styleClass="secondary-button" text="刷新" />
+                        <Button fx:id="insertButton" mnemonicParsing="false" onAction="#insert" styleClass="primary-button" text="新增" />
+                        <Button fx:id="updateButton" mnemonicParsing="false" onAction="#update" styleClass="secondary-button" text="修改" />
+                        <Button fx:id="deleteButton" mnemonicParsing="false" onAction="#delete" styleClass="danger-button" text="删除" />
+                     </children>
+                  </HBox>
+               </children>
+            </HBox>
+            <TableView fx:id="results" VBox.vgrow="ALWAYS">
+               <columns>
+                  <TableColumn fx:id="id" prefWidth="96.0" text="ID" />
+                  <TableColumn fx:id="studentName" prefWidth="180.0" text="学生姓名" />
+                  <TableColumn fx:id="courseName" prefWidth="240.0" text="课程名称" />
+                  <TableColumn fx:id="score" prefWidth="150.0" text="考试成绩" />
+               </columns>
+            </TableView>
+         </children>
+      </VBox>
    </children>
-</AnchorPane>
+</VBox>

@@ -4,7 +4,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -31,31 +30,29 @@ public class LoginController {
         String usernameText = this.username.getText();
         String passwordText = this.password.getText();
         if (!(usernameText.equals("admin") && passwordText.equals("123"))) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION, "用户名或密码不对");
+            Alert alert = new Alert(Alert.AlertType.INFORMATION, "用户名或密码不正确");
             alert.showAndWait();
-            System.out.println("用户名或密码不对");
             return;
         }
-        System.out.println("登录中");
+
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/app-content.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) this.loginButton.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        stage.setScene(SceneUtil.createScene(root));
         stage.setTitle("学生管理系统");
         stage.setMaximized(true);
     }
-    
 
     @FXML
     void register(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/register.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) this.registerButton.getScene().getWindow();
-        stage.setScene(new Scene(root));
-    }
-    public void initialize(){
-this.username.setText("admin");
-this.password.setText("123");
+        stage.setScene(SceneUtil.createScene(root));
     }
 
+    public void initialize() {
+        this.username.setText("admin");
+        this.password.setText("123");
+    }
 }

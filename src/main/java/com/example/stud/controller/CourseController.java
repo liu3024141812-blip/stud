@@ -9,13 +9,13 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -24,6 +24,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class CourseController {
 
@@ -46,6 +47,9 @@ public class CourseController {
     private Button insertButton;
 
     @FXML
+    private TextField keywordField;
+
+    @FXML
     private TableView<Course> results;
 
     @FXML
@@ -59,17 +63,17 @@ public class CourseController {
 
     private final CourseService courseService = new CourseService();
 
+    private List<Course> courses = List.of();
+
     @FXML
     public void initialize() {
         this.initTable();
-        this.search(null);
+        this.query(null);
     }
 
     @FXML
     void delete(ActionEvent event) {
-        System.out.println("将要删除");
         Course selectedItem = this.results.getSelectionModel().getSelectedItem();
-        // System.out.println(selectedItem);
         if (selectedItem == null) {
             new Alert(Alert.AlertType.INFORMATION, "没有选中待删除的数据").showAndWait();
             return;
@@ -81,7 +85,7 @@ public class CourseController {
         }
         try {
             courseService.delete(selectedItem.getId());
-            this.search(null);
+            this.query(null);
         } catch (ServiceException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }
@@ -89,16 +93,14 @@ public class CourseController {
 
     @FXML
     void insert(ActionEvent event) throws IOException {
-        System.out.println("----打开新增窗口--");
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/course-insert.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
+        stage.setScene(SceneUtil.createScene(root));
         CourseInsertController controller = loader.getController();
         controller.runnable = () -> {
             stage.close();
-            System.out.println("保存后关闭对话框");
-            this.search(null);
+            this.query(null);
         };
         stage.showAndWait();
     }
@@ -108,44 +110,58 @@ public class CourseController {
         Course selectedItem = this.results.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             new Alert(Alert.AlertType.INFORMATION, "未选择修改对象").showAndWait();
-            System.out.println("back");
             return;
         }
-        // System.out.println("要修改的数据" + selectedItem);
 
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/course-update.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        System.out.println("准备更新");
+        stage.setScene(SceneUtil.createScene(root));
         CourseUpdateController controller = loader.getController();
         controller.setItem(selectedItem);
-
         controller.onUpdate = () -> {
             stage.close();
-            this.search(null);
+            this.query(null);
         };
         stage.showAndWait();
     }
 
     @FXML
-    void search(ActionEvent event) {
+    void query(ActionEvent event) {
         try {
-            List<Course> courses = courseService.findAll();
-            ObservableList<Course> observableList = FXCollections.observableList(courses);
+            this.courses = courseService.findAll();
+            ObservableList<Course> observableList = FXCollections.observableList(this.courses);
             this.results.setItems(observableList);
+            this.keywordField.clear();
         } catch (ServiceException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }
     }
 
+    @FXML
+    void search(ActionEvent event) {
+        String normalizedKeyword = this.keywordField.getText() == null ? "" : this.keywordField.getText().trim().toLowerCase();
+        if (normalizedKeyword.isEmpty()) {
+            this.results.setItems(FXCollections.observableList(this.courses));
+            return;
+        }
+        List<Course> filtered = this.courses.stream()
+                .filter(course -> contains(course.getName(), normalizedKeyword)
+                        || contains(course.getTeacher(), normalizedKeyword))
+                .collect(Collectors.toList());
+        this.results.setItems(FXCollections.observableList(filtered));
+    }
+
+    private boolean contains(Object value, String keyword) {
+        return value != null && value.toString().toLowerCase().contains(keyword);
+    }
+
     private void initTable() {
         this.cid.setCellValueFactory(new PropertyValueFactory<>("id"));
+        this.cimage.setCellValueFactory(new PropertyValueFactory<>("image"));
         this.cname.setCellValueFactory(new PropertyValueFactory<>("name"));
         this.teacher.setCellValueFactory(new PropertyValueFactory<>("teacher"));
         this.credits.setCellValueFactory(new PropertyValueFactory<>("credits"));
-        // 图片列：默认空，加载完成后显示图片
-        this.cimage.setCellValueFactory(new PropertyValueFactory<>("image"));
         this.cimage.setCellFactory(param -> new TableCell<>() {
             private final ImageView imageView = new ImageView();
 

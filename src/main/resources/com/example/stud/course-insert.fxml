@@ -1,54 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.ImageView?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.CourseInsertController">
+<VBox alignment="CENTER" prefHeight="560.0" prefWidth="680.0" styleClass="form-root" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.CourseInsertController">
    <children>
-      <GridPane hgap="40.0" vgap="40.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="370.66668701171875" minWidth="10.0" prefWidth="113.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="530.6666564941406" minWidth="10.0" prefWidth="487.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="56.000003814697266" minHeight="10.0" prefHeight="30.333332061767578" vgrow="SOMETIMES" />
-          <RowConstraints maxHeight="36.66666793823242" minHeight="3.9999961853027344" prefHeight="30.666667938232422" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <VBox spacing="20.0" styleClass="form-card">
          <children>
-            <Label text="课程名称" />
-            <TextField fx:id="name" GridPane.columnIndex="1" />
-            <TextField fx:id="teacher" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="image" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <TextField fx:id="credits" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <Label text="教师名称" GridPane.rowIndex="1" />
-            <Label text="封面" GridPane.rowIndex="2" />
-            <Label text="学分" GridPane.rowIndex="3" />
+            <Label styleClass="form-title" text="新增课程" />
+            <GridPane hgap="18.0" vgap="14.0">
+               <children>
+                  <Label styleClass="field-label" text="课程名称" />
+                  <TextField fx:id="name" promptText="请输入课程名称" GridPane.columnIndex="1" />
+                  <Label styleClass="field-label" text="教师名称" GridPane.rowIndex="1" />
+                  <TextField fx:id="teacher" promptText="请输入教师名称" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label styleClass="field-label" text="封面" GridPane.rowIndex="2" />
+                  <TextField fx:id="image" promptText="请输入图片地址" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label styleClass="field-label" text="学分" GridPane.rowIndex="3" />
+                  <TextField fx:id="credits" promptText="请输入学分" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+               </children>
+            </GridPane>
+            <HBox alignment="CENTER_LEFT" spacing="16.0">
+               <children>
+                  <Button fx:id="previewButton" mnemonicParsing="false" onAction="#previewImage" styleClass="secondary-button" text="预览图片" />
+                  <ImageView fx:id="imagePreview" fitHeight="120.0" fitWidth="220.0" pickOnBounds="true" preserveRatio="true" styleClass="image-preview" />
+               </children>
+            </HBox>
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+               <children>
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" styleClass="secondary-button" text="取消" />
+                  <Button fx:id="saveButton" mnemonicParsing="false" onAction="#save" styleClass="primary-button" text="保存" />
+               </children>
+            </HBox>
          </children>
-         <padding>
-            <Insets bottom="20.0" left="40.0" right="40.0" top="40.0" />
-         </padding>
-      </GridPane>
-      <AnchorPane prefHeight="150.0" prefWidth="600.0">
-         <children>
-            <Button fx:id="previewButton" layoutX="220.0" layoutY="5.0" mnemonicParsing="false" onAction="#previewImage" text="预览图片" />
-            <ImageView fx:id="imagePreview" fitHeight="120.0" fitWidth="200.0" layoutX="200.0" layoutY="35.0" pickOnBounds="true" preserveRatio="true" />
-         </children>
-      </AnchorPane>
-      <AnchorPane prefHeight="60.0" prefWidth="600.0">
-         <children>
-            <Button fx:id="saveButton" layoutX="459.0" layoutY="10.0" mnemonicParsing="false" onAction="#save" text="保存" />
-            <Button fx:id="cancelButton" layoutX="193.0" layoutY="10.0" mnemonicParsing="false" onAction="#cancel" text="取消" />
-         </children>
-      </AnchorPane>
+      </VBox>
    </children>
 </VBox>

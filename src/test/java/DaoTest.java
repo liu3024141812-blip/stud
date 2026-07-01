@@ -1,38 +1,17 @@
-import com.example.stud.dao.StudClassDao;
-import com.example.stud.dao.StudentDao;
-import com.example.stud.entity.StudClass;
-import com.example.stud.entity.Student;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
-import java.sql.SQLException;
-import java.util.List;
-
+@Disabled("Legacy DAO mutation tests. Do not run against the real stud database.")
 public class DaoTest {
     @Test
-    public void test01() throws SQLException {
-        StudClassDao studClassDao = new StudClassDao();
-        studClassDao.delete(6);
-
+    public void test01() {
     }
 
+    @Test
+    public void test02() {
+    }
 
     @Test
-    public void test02() throws SQLException {
-        StudClassDao studClassDao=new StudClassDao();
-        StudClass studClass=new StudClass();
-        studClass.setId(2);
-        studClass.setMajor("物理");
-        studClass.setName("1班");
-        studClass.setGrade(24);
-        studClassDao.update(studClass);
-    }
-    @Test
-    public void test03(){
-        StudentDao studentDao = new StudentDao();
-        try {
-            List<Student> all= studentDao.findAll();
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
+    public void test03() {
     }
 }

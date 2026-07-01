@@ -4,9 +4,10 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.StackPane;
+import javafx.scene.shape.Circle;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -18,6 +19,9 @@ public class AppContentController {
 
     @FXML
     private Button courseButton;
+
+    @FXML
+    private ImageView avatarImage;
 
     @FXML
     private Button logoutButton;
@@ -33,7 +37,9 @@ public class AppContentController {
 
     @FXML
     public void initialize() {
+        this.avatarImage.setClip(new Circle(23, 23, 23));
         this.navigateTo("/com/example/stud/stud-class-view.fxml");
+        this.setActiveButton(this.classButton);
     }
 
     @FXML
@@ -41,28 +47,31 @@ public class AppContentController {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/login.fxml"));
         Parent root = loader.load();
         Stage stage = (Stage) this.logoutButton.getScene().getWindow();
-        stage.setScene(new Scene(root));
+        stage.setScene(SceneUtil.createScene(root));
     }
-//进入班级管理页面
+
     @FXML
     void toclass(ActionEvent event) {
-        System.out.println("路由跳转页面");
         this.navigateTo("/com/example/stud/stud-class-view.fxml");
+        this.setActiveButton(this.classButton);
     }
-//进入课程管理
+
     @FXML
     void tocourse(ActionEvent event) {
         this.navigateTo("/com/example/stud/course-view.fxml");
+        this.setActiveButton(this.courseButton);
     }
-//进入成绩管理
+
     @FXML
     void toscore(ActionEvent event) {
         this.navigateTo("/com/example/stud/score-view.fxml");
+        this.setActiveButton(this.scoreButton);
     }
-//进入学生管理
+
     @FXML
     void tostudent(ActionEvent event) {
         this.navigateTo("/com/example/stud/student-view.fxml");
+        this.setActiveButton(this.studentButton);
     }
 
     public void navigateTo(String fxml) {
@@ -73,8 +82,14 @@ public class AppContentController {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
-        this.main.getChildren().clear();
-        this.main.getChildren().add(root);
+        this.main.getChildren().setAll(root);
     }
 
+    private void setActiveButton(Button activeButton) {
+        this.classButton.getStyleClass().remove("nav-button-active");
+        this.studentButton.getStyleClass().remove("nav-button-active");
+        this.courseButton.getStyleClass().remove("nav-button-active");
+        this.scoreButton.getStyleClass().remove("nav-button-active");
+        activeButton.getStyleClass().add("nav-button-active");
+    }
 }

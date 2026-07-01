@@ -4,12 +4,9 @@ import com.example.stud.dao.StudClassDao;
 import com.example.stud.entity.StudClass;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
-/**
- * 班级业务层：负责参数校验、调用 DAO、捕获并包装异常。
- * Controller 不再直接持有 DAO，也无需 throws SQLException。
- */
 public class StudClassService {
 
     private final StudClassDao studClassDao = new StudClassDao();
@@ -33,7 +30,7 @@ public class StudClassService {
 
     public int update(StudClass studClass) {
         if (studClass.getId() == null) {
-            throw new ServiceException("修改班级失败：ID 不能为空");
+            throw new ServiceException("修改班级失败：ID不能为空");
         }
         validate(studClass);
         try {
@@ -45,13 +42,20 @@ public class StudClassService {
 
     public int delete(Integer id) {
         if (id == null) {
-            throw new ServiceException("删除班级失败：ID 不能为空");
+            throw new ServiceException("删除班级失败：ID不能为空");
         }
         try {
             return studClassDao.delete(id);
         } catch (SQLException e) {
+            if (isForeignKeyViolation(e)) {
+                throw new ServiceException("该班级下仍有学生，不能删除。请先调整或删除关联学生。", e);
+            }
             throw new ServiceException("删除班级失败", e);
         }
+    }
+
+    private boolean isForeignKeyViolation(SQLException e) {
+        return e instanceof SQLIntegrityConstraintViolationException || e.getErrorCode() == 1451;
     }
 
     private void validate(StudClass studClass) {

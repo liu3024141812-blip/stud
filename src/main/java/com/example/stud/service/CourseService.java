@@ -4,6 +4,7 @@ import com.example.stud.dao.CourseDao;
 import com.example.stud.entity.Course;
 
 import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
 
 public class CourseService {
@@ -29,7 +30,7 @@ public class CourseService {
 
     public int update(Course course) {
         if (course.getId() == null) {
-            throw new ServiceException("修改课程失败：ID 不能为空");
+            throw new ServiceException("修改课程失败：ID不能为空");
         }
         validate(course);
         try {
@@ -41,13 +42,20 @@ public class CourseService {
 
     public int delete(Integer id) {
         if (id == null) {
-            throw new ServiceException("删除课程失败：ID 不能为空");
+            throw new ServiceException("删除课程失败：ID不能为空");
         }
         try {
             return courseDao.delete(id);
         } catch (SQLException e) {
+            if (isForeignKeyViolation(e)) {
+                throw new ServiceException("该课程已有成绩记录，不能删除。请先删除关联成绩。", e);
+            }
             throw new ServiceException("删除课程失败", e);
         }
+    }
+
+    private boolean isForeignKeyViolation(SQLException e) {
+        return e instanceof SQLIntegrityConstraintViolationException || e.getErrorCode() == 1451;
     }
 
     private void validate(Course course) {

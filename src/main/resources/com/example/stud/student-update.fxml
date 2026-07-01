@@ -1,51 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.layout.AnchorPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
-<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.StudentUpdateController">
+<VBox alignment="CENTER" prefHeight="460.0" prefWidth="620.0" styleClass="form-root" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.StudentUpdateController">
    <children>
-      <GridPane hgap="40.0" vgap="40.0">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="295.0" minWidth="10.0" prefWidth="134.0" />
-          <ColumnConstraints hgrow="SOMETIMES" maxWidth="486.0" minWidth="10.0" prefWidth="466.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
+      <VBox spacing="20.0" styleClass="form-card">
          <children>
-            <Label text="ID" />
-            <Label fx:id="id" text="0" GridPane.columnIndex="1" />
-            <Label text="姓名" GridPane.rowIndex="1" />
-            <Label text="学号" GridPane.rowIndex="2" />
-            <Label text="班级" GridPane.rowIndex="3" />
-            <Label text="已修学分" GridPane.rowIndex="4" />
-            <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-            <TextField fx:id="studentNo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-            <ComboBox fx:id="classId" prefWidth="466.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-            <TextField fx:id="credits" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+            <Label styleClass="form-title" text="更新学生" />
+            <GridPane hgap="18.0" vgap="14.0">
+               <children>
+                  <Label styleClass="field-label" text="ID" />
+                  <Label fx:id="id" text="0" GridPane.columnIndex="1" />
+                  <Label styleClass="field-label" text="姓名" GridPane.rowIndex="1" />
+                  <TextField fx:id="name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <Label styleClass="field-label" text="学号" GridPane.rowIndex="2" />
+                  <TextField fx:id="studentNo" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <Label styleClass="field-label" text="班级" GridPane.rowIndex="3" />
+                  <ComboBox fx:id="classId" prefWidth="380.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                  <Label styleClass="field-label" text="已修学分" GridPane.rowIndex="4" />
+                  <TextField fx:id="credits" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+               </children>
+            </GridPane>
+            <HBox alignment="CENTER_RIGHT" spacing="12.0">
+               <children>
+                  <Button fx:id="cancelButton" mnemonicParsing="false" onAction="#cancel" styleClass="secondary-button" text="取消" />
+                  <Button fx:id="updateButton" mnemonicParsing="false" onAction="#update" styleClass="primary-button" text="更新" />
+               </children>
+            </HBox>
          </children>
-         <padding>
-            <Insets bottom="40.0" left="40.0" right="40.0" top="40.0" />
-         </padding>
-      </GridPane>
-      <AnchorPane prefHeight="200.0" prefWidth="200.0">
-         <children>
-            <Button fx:id="cancelButton" layoutX="100.0" layoutY="77.0" mnemonicParsing="false" onAction="#cancel" text="取消" />
-            <Button fx:id="updateButton" layoutX="397.0" layoutY="77.0" mnemonicParsing="false" onAction="#update" text="更新" />
-         </children>
-      </AnchorPane>
+      </VBox>
    </children>
 </VBox>

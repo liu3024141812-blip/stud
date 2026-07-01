@@ -9,18 +9,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class StudClassController {
     @FXML
@@ -28,6 +29,9 @@ public class StudClassController {
 
     @FXML
     private TableColumn<StudClass, Integer> grade;
+
+    @FXML
+    private TextField keywordField;
 
     @FXML
     private TableColumn<StudClass, String> myclass;
@@ -52,18 +56,17 @@ public class StudClassController {
 
     private final StudClassService studClassService = new StudClassService();
 
+    private List<StudClass> studClasses = List.of();
+
     @FXML
     public void initialize() {
-
         this.initTable();
-        this.search(null);
+        this.query(null);
     }
 
     @FXML
     void delete(ActionEvent event) {
-        System.out.println("将要删除");
         StudClass selectedItem = this.results.getSelectionModel().getSelectedItem();
-        // System.out.println(selectedItem);
         if (selectedItem == null) {
             new Alert(Alert.AlertType.INFORMATION, "没有选中待删除的数据").showAndWait();
             return;
@@ -75,7 +78,7 @@ public class StudClassController {
         }
         try {
             studClassService.delete(selectedItem.getId());
-            this.search(null);
+            this.query(null);
         } catch (ServiceException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }
@@ -83,17 +86,14 @@ public class StudClassController {
 
     @FXML
     void insert(ActionEvent event) throws IOException {
-        System.out.println("----打开新增窗口--");
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/stud-class-insert.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        //自动搜索
+        stage.setScene(SceneUtil.createScene(root));
         StudClassInsertController controller = loader.getController();
         controller.runnable = () -> {
             stage.close();
-            System.out.println("保存后关闭对话框");
-            this.search(null);
+            this.query(null);
         };
         stage.showAndWait();
     }
@@ -103,40 +103,56 @@ public class StudClassController {
         StudClass selectedItem = this.results.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             new Alert(Alert.AlertType.INFORMATION, "未选择修改对象").showAndWait();
-            System.out.println("back");
             return;
         }
-        // System.out.println("要修改的数据" + selectedItem);
 
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/stud-class-update.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
-        System.out.println("准备更新");
+        stage.setScene(SceneUtil.createScene(root));
         StudClassUpdateController controller = loader.getController();
         controller.setItem(selectedItem);
-
         controller.onUpdate = () -> {
             stage.close();
-            this.search(null);
+            this.query(null);
         };
         stage.showAndWait();
     }
 
     @FXML
-    void search(ActionEvent event) {
+    void query(ActionEvent event) {
         try {
-            List<StudClass> studClasses = studClassService.findAll();
-            ObservableList<StudClass> observableList = FXCollections.observableList(studClasses);
+            this.studClasses = studClassService.findAll();
+            ObservableList<StudClass> observableList = FXCollections.observableList(this.studClasses);
             this.results.setItems(observableList);
+            this.keywordField.clear();
         } catch (ServiceException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }
     }
 
     @FXML
+    void search(ActionEvent event) {
+        String normalizedKeyword = this.keywordField.getText() == null ? "" : this.keywordField.getText().trim().toLowerCase();
+        if (normalizedKeyword.isEmpty()) {
+            this.results.setItems(FXCollections.observableList(this.studClasses));
+            return;
+        }
+        List<StudClass> filtered = this.studClasses.stream()
+                .filter(studClass -> contains(studClass.getGrade(), normalizedKeyword)
+                        || contains(studClass.getMajor(), normalizedKeyword)
+                        || contains(studClass.getName(), normalizedKeyword))
+                .collect(Collectors.toList());
+        this.results.setItems(FXCollections.observableList(filtered));
+    }
+
+    @FXML
     void select(ActionEvent event) {
 
+    }
+
+    private boolean contains(Object value, String keyword) {
+        return value != null && value.toString().toLowerCase().contains(keyword);
     }
 
     private void initTable() {

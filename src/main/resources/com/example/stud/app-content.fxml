@@ -1,27 +1,50 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/26" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.AppContentController">
-   <top>
-      <AnchorPane prefHeight="61.0" prefWidth="600.0" BorderPane.alignment="CENTER" />
-   </top>
+<BorderPane prefHeight="760.0" prefWidth="1180.0" styleClass="app-shell" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.AppContentController">
    <left>
-      <VBox prefHeight="319.0" prefWidth="101.0" spacing="30.0" BorderPane.alignment="CENTER">
+      <VBox prefWidth="240.0" styleClass="sidebar" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="classButton" mnemonicParsing="false" onAction="#toclass" text="班级管理" />
-            <Button fx:id="studentButton" mnemonicParsing="false" onAction="#tostudent" text="学生管理" />
-            <Button fx:id="courseButton" mnemonicParsing="false" onAction="#tocourse" text="课程管理" />
-            <Button fx:id="scoreButton" mnemonicParsing="false" onAction="#toscore" text="成绩管理" />
-            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" text="退出系统" />
+            <HBox alignment="CENTER_LEFT" spacing="12.0">
+               <children>
+                  <ImageView fx:id="avatarImage" fitHeight="46.0" fitWidth="46.0" pickOnBounds="true" preserveRatio="false" styleClass="brand-avatar">
+                     <image>
+                        <Image url="@avatar.jpg" />
+                     </image>
+                  </ImageView>
+                  <VBox spacing="2.0">
+                     <children>
+                        <Label styleClass="brand-title" text="刘明威" />
+                        <Label styleClass="brand-subtitle" text="Admin" />
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <Region prefHeight="18.0" />
+            <Button fx:id="classButton" mnemonicParsing="false" onAction="#toclass" styleClass="nav-button" text="班级管理" />
+            <Button fx:id="studentButton" mnemonicParsing="false" onAction="#tostudent" styleClass="nav-button" text="学生管理" />
+            <Button fx:id="courseButton" mnemonicParsing="false" onAction="#tocourse" styleClass="nav-button" text="课程管理" />
+            <Button fx:id="scoreButton" mnemonicParsing="false" onAction="#toscore" styleClass="nav-button" text="成绩管理" />
+            <Region VBox.vgrow="ALWAYS" />
+            <Button fx:id="logoutButton" mnemonicParsing="false" onAction="#logout" styleClass="logout-button" text="退出系统" />
          </children>
       </VBox>
    </left>
    <center>
-      <StackPane fx:id="main" prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER" />
+      <StackPane fx:id="main" styleClass="content-area" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="0.0" left="0.0" right="0.0" top="0.0" />
+         </padding>
+      </StackPane>
    </center>
 </BorderPane>

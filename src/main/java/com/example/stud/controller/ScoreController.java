@@ -9,18 +9,19 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 public class ScoreController {
 
@@ -43,6 +44,9 @@ public class ScoreController {
     private Button insertButton;
 
     @FXML
+    private TextField keywordField;
+
+    @FXML
     private TableView<Score> results;
 
     @FXML
@@ -53,10 +57,12 @@ public class ScoreController {
 
     private final ScoreService scoreService = new ScoreService();
 
+    private List<Score> scores = List.of();
+
     @FXML
     public void initialize() {
         this.initTable();
-        this.search(null);
+        this.query(null);
     }
 
     @FXML
@@ -78,7 +84,7 @@ public class ScoreController {
         }
         try {
             scoreService.delete(selectedItem.getId());
-            this.search(null);
+            this.query(null);
         } catch (ServiceException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }
@@ -89,11 +95,11 @@ public class ScoreController {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/score-insert.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
+        stage.setScene(SceneUtil.createScene(root));
         ScoreInsertController controller = loader.getController();
         controller.runnable = () -> {
             stage.close();
-            this.search(null);
+            this.query(null);
         };
         stage.showAndWait();
     }
@@ -109,25 +115,44 @@ public class ScoreController {
         FXMLLoader loader = new FXMLLoader(this.getClass().getResource("/com/example/stud/score-update.fxml"));
         Parent root = loader.load();
         Stage stage = new Stage();
-        stage.setScene(new Scene(root));
+        stage.setScene(SceneUtil.createScene(root));
         ScoreUpdateController controller = loader.getController();
         controller.setItem(selectedItem);
         controller.onUpdate = () -> {
             stage.close();
-            this.search(null);
+            this.query(null);
         };
         stage.showAndWait();
     }
 
     @FXML
-    void search(ActionEvent event) {
+    void query(ActionEvent event) {
         try {
-            List<Score> scores = scoreService.findAll();
-            ObservableList<Score> observableList = FXCollections.observableList(scores);
+            this.scores = scoreService.findAll();
+            ObservableList<Score> observableList = FXCollections.observableList(this.scores);
             this.results.setItems(observableList);
+            this.keywordField.clear();
         } catch (ServiceException e) {
             new Alert(Alert.AlertType.ERROR, e.getMessage()).showAndWait();
         }
+    }
+
+    @FXML
+    void search(ActionEvent event) {
+        String normalizedKeyword = this.keywordField.getText() == null ? "" : this.keywordField.getText().trim().toLowerCase();
+        if (normalizedKeyword.isEmpty()) {
+            this.results.setItems(FXCollections.observableList(this.scores));
+            return;
+        }
+        List<Score> filtered = this.scores.stream()
+                .filter(score -> contains(score.getStudentName(), normalizedKeyword)
+                        || contains(score.getCourseName(), normalizedKeyword))
+                .collect(Collectors.toList());
+        this.results.setItems(FXCollections.observableList(filtered));
+    }
+
+    private boolean contains(Object value, String keyword) {
+        return value != null && value.toString().toLowerCase().contains(keyword);
     }
 
     private void initTable() {
