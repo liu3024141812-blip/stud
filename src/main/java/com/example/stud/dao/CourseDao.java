@@ -37,7 +37,7 @@ public class CourseDao {
                 course.setTeacher(resultSet.getString("teacher"));
                 course.setImage(resultSet.getString("image"));
                 course.setCredits(resultSet.getInt("credits"));
-                System.out.println("数据库：" + course);
+                // System.out.println("数据库：" + course);
                 courses.add(course);
             }
             return courses;

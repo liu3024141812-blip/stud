@@ -62,7 +62,7 @@ public class CourseUpdateController {
             course.setImage(this.image.getText());
             course.setCredits(this.credits.getText() == null || this.credits.getText().isBlank()
                     ? 0 : Integer.valueOf(this.credits.getText()));
-            System.out.println("将要更新:" + course);
+            // System.out.println("将要更新:" + course);
             courseService.update(course);
             if (onUpdate != null) {
                 onUpdate.run();

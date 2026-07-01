@@ -12,6 +12,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -19,6 +20,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class ScoreController {
 
@@ -62,6 +64,16 @@ public class ScoreController {
         Score selectedItem = this.results.getSelectionModel().getSelectedItem();
         if (selectedItem == null) {
             new Alert(Alert.AlertType.INFORMATION, "没有选中待删除的数据").showAndWait();
+            return;
+        }
+        Alert confirm = new Alert(
+                Alert.AlertType.CONFIRMATION,
+                "确定删除成绩：" + selectedItem.getStudentName() + " - " + selectedItem.getCourseName() + "？",
+                ButtonType.OK,
+                ButtonType.CANCEL
+        );
+        Optional<ButtonType> result = confirm.showAndWait();
+        if (result.isEmpty() || result.get() != ButtonType.OK) {
             return;
         }
         try {

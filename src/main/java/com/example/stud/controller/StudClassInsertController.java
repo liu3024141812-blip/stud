@@ -45,7 +45,7 @@ public class StudClassInsertController {
             studClass.setMajor(this.mymajor.getText());
             studClass.setGrade(Integer.parseInt(this.grade.getText()));
             studClass.setName(this.myclass.getText());
-            System.out.println("待存储的数据" + studClass);
+            // System.out.println("待存储的数据" + studClass);
             // 调用业务层保存
             studClassService.insert(studClass);
             if (runnable != null) {

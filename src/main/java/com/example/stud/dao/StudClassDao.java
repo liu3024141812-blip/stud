@@ -45,7 +45,7 @@ public class StudClassDao {
                 studClass.setId(id);
                 studClass.setMajor(major);
                 studClass.setName(name);
-                System.out.println("数据库：" + studClass);
+                // System.out.println("数据库：" + studClass);
                 studClasses.add(studClass);
                 // System.out.println("来自数据库的数据:" + major + "," + name + ", " + id + "," + grade);
             }

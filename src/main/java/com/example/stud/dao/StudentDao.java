@@ -52,7 +52,7 @@ public class StudentDao {
                 student.setStudentNo(studentNo);
                 student.setClassId(resultSet.wasNull() ? null : classId);
                 student.setCredits(credits);
-                System.out.println("数据库：" + student);
+                // System.out.println("数据库：" + student);
                 students.add(student);
             }
             return students;

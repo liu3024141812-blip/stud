@@ -51,7 +51,7 @@ public class StudClassUpdateController {
             studClass.setMajor(this.mymajor.getText());
             studClass.setGrade(Integer.valueOf(this.grade.getText()));
             studClass.setName(this.myclass.getText());
-            System.out.println("将要更新:" + studClass);
+            // System.out.println("将要更新:" + studClass);
             studClassService.update(studClass);
             if (onUpdate != null) {
                 onUpdate.run();

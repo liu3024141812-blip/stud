@@ -64,7 +64,7 @@ public class StudentUpdateController {
             student.setClassId(selectedClass == null ? null : selectedClass.getId());
             student.setCredits(this.credits.getText() == null || this.credits.getText().isBlank()
                     ? 0 : Integer.valueOf(this.credits.getText()));
-            System.out.println("将要更新:" + student);
+            // System.out.println("将要更新:" + student);
             studentService.update(student);
             if (onUpdate != null) {
                 onUpdate.run();

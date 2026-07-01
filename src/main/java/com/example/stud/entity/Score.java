@@ -10,6 +10,8 @@ public class Score {
     private String courseName;
     private BigDecimal score;
 
+    // 用于调试
+    /*
     @Override
     public String toString() {
         return "Score{" +
@@ -21,6 +23,7 @@ public class Score {
                 ", score=" + score +
                 '}';
     }
+    */
 
     public Integer getId() {
         return id;

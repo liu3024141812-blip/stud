@@ -6,6 +6,8 @@ public class StudClass {
     private String major;
     private String name;
 
+    // 用于调试
+    /*
     @Override
     public String toString() {
         return "StudClass{" +
@@ -15,6 +17,7 @@ public class StudClass {
                 ", name='" + name + '\'' +
                 '}';
     }
+    */
 
     public Integer getId() {
         return id;

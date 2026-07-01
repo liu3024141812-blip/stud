@@ -22,6 +22,9 @@ public class ScoreService {
     public int insert(Score score) {
         validate(score);
         try {
+            if (scoreDao.existsByStudentAndCourse(score.getStudentId(), score.getCourseId())) {
+                throw new ServiceException("该学生这门课已有成绩，请使用修改功能");
+            }
             return scoreDao.insert(score);
         } catch (SQLException e) {
             throw new ServiceException("新增成绩失败", e);

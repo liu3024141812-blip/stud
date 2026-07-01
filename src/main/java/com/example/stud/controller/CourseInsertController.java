@@ -58,7 +58,7 @@ public class CourseInsertController {
             course.setImage(this.image.getText());
             course.setCredits(this.credits.getText() == null || this.credits.getText().isBlank()
                     ? 0 : Integer.valueOf(this.credits.getText()));
-            System.out.println("待存储的数据" + course);
+            // System.out.println("待存储的数据" + course);
             courseService.insert(course);
             if (runnable != null) {
                 runnable.run();

@@ -7,6 +7,8 @@ public class Course {
     private String image;
     private Integer credits;
 
+    // 用于调试
+    /*
     @Override
     public String toString() {
         return "Course{" +
@@ -17,6 +19,7 @@ public class Course {
                 ", credits=" + credits +
                 '}';
     }
+    */
 
     public Integer getId() {
         return id;

@@ -15,7 +15,7 @@ public class MyTest {
         studClass.setMajor("计科");
         studClass.setId(0);
         studClass.setGrade(24);
-        System.out.println(studClass);
+        // System.out.println(studClass);
         String sql="insert into stud_class (myclass,grade,mymajor) values (?,?,?)";
 
         Class.forName("com.mysql.cj.jdbc.Driver");

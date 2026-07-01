@@ -59,7 +59,7 @@ public class StudentInsertController {
             student.setClassId(selectedClass == null ? null : selectedClass.getId());
             student.setCredits(this.credits.getText() == null || this.credits.getText().isBlank()
                     ? 0 : Integer.valueOf(this.credits.getText()));
-            System.out.println("待存储的数据" + student);
+            // System.out.println("待存储的数据" + student);
             studentService.insert(student);
             if (runnable != null) {
                 runnable.run();

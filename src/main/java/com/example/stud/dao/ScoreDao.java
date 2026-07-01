@@ -23,6 +23,18 @@ public class ScoreDao {
         }
     }
 
+    public boolean existsByStudentAndCourse(Integer studentId, Integer courseId) throws SQLException {
+        String sql = "select 1 from score where student_id = ? and course_id = ? limit 1";
+        try (Connection connection = DbUtil.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+            statement.setInt(1, studentId);
+            statement.setInt(2, courseId);
+            try (ResultSet resultSet = statement.executeQuery()) {
+                return resultSet.next();
+            }
+        }
+    }
+
     public List<Score> findAll() throws SQLException {
         String sql = """
                 select sc.id, sc.student_id, s.name as student_name, sc.course_id, c.name as course_name, sc.score
