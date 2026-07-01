@@ -31,6 +31,7 @@
                </children>
             </HBox>
             <Region prefHeight="18.0" />
+            <Button fx:id="dashboardButton" mnemonicParsing="false" onAction="#todashboard" styleClass="nav-button" text="控制台" />
             <Button fx:id="classButton" mnemonicParsing="false" onAction="#toclass" styleClass="nav-button" text="班级管理" />
             <Button fx:id="studentButton" mnemonicParsing="false" onAction="#tostudent" styleClass="nav-button" text="学生管理" />
             <Button fx:id="courseButton" mnemonicParsing="false" onAction="#tocourse" styleClass="nav-button" text="课程管理" />

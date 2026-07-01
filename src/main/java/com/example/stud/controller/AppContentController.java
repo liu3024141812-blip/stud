@@ -14,11 +14,16 @@ import java.io.IOException;
 
 public class AppContentController {
 
+    private static AppContentController current;
+
     @FXML
     private Button classButton;
 
     @FXML
     private Button courseButton;
+
+    @FXML
+    private Button dashboardButton;
 
     @FXML
     private ImageView avatarImage;
@@ -37,9 +42,9 @@ public class AppContentController {
 
     @FXML
     public void initialize() {
+        current = this;
         this.avatarImage.setClip(new Circle(23, 23, 23));
-        this.navigateTo("/com/example/stud/stud-class-view.fxml");
-        this.setActiveButton(this.classButton);
+        this.openDashboardPage();
     }
 
     @FXML
@@ -52,24 +57,54 @@ public class AppContentController {
 
     @FXML
     void toclass(ActionEvent event) {
-        this.navigateTo("/com/example/stud/stud-class-view.fxml");
-        this.setActiveButton(this.classButton);
+        this.openClassPage();
     }
 
     @FXML
     void tocourse(ActionEvent event) {
-        this.navigateTo("/com/example/stud/course-view.fxml");
-        this.setActiveButton(this.courseButton);
+        this.openCoursePage();
+    }
+
+    @FXML
+    void todashboard(ActionEvent event) {
+        this.openDashboardPage();
     }
 
     @FXML
     void toscore(ActionEvent event) {
-        this.navigateTo("/com/example/stud/score-view.fxml");
-        this.setActiveButton(this.scoreButton);
+        this.openScorePage();
     }
 
     @FXML
     void tostudent(ActionEvent event) {
+        this.openStudentPage();
+    }
+
+    public static AppContentController getCurrent() {
+        return current;
+    }
+
+    public void openClassPage() {
+        this.navigateTo("/com/example/stud/stud-class-view.fxml");
+        this.setActiveButton(this.classButton);
+    }
+
+    public void openCoursePage() {
+        this.navigateTo("/com/example/stud/course-view.fxml");
+        this.setActiveButton(this.courseButton);
+    }
+
+    public void openDashboardPage() {
+        this.navigateTo("/com/example/stud/dashboard-view.fxml");
+        this.setActiveButton(this.dashboardButton);
+    }
+
+    public void openScorePage() {
+        this.navigateTo("/com/example/stud/score-view.fxml");
+        this.setActiveButton(this.scoreButton);
+    }
+
+    public void openStudentPage() {
         this.navigateTo("/com/example/stud/student-view.fxml");
         this.setActiveButton(this.studentButton);
     }
@@ -86,6 +121,7 @@ public class AppContentController {
     }
 
     private void setActiveButton(Button activeButton) {
+        this.dashboardButton.getStyleClass().remove("nav-button-active");
         this.classButton.getStyleClass().remove("nav-button-active");
         this.studentButton.getStyleClass().remove("nav-button-active");
         this.courseButton.getStyleClass().remove("nav-button-active");
