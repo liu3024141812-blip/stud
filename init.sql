@@ -4,28 +4,74 @@ CREATE TABLE IF NOT EXISTS stud_class (
     myclass   VARCHAR(50)  NOT NULL,
     grade     INT          NOT NULL,
     mymajor   VARCHAR(100) NOT NULL,
-    PRIMARY KEY (id)
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_class_grade_major_name (grade, mymajor, myclass)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -------------------- student --------------------
 CREATE TABLE IF NOT EXISTS student (
-    id          INT PRIMARY KEY AUTO_INCREMENT,
-    name        VARCHAR(50)  NOT NULL,
-    student_no  VARCHAR(20)  NOT NULL UNIQUE,
-    class_id    INT          NULL,
-    credits     INT          NOT NULL DEFAULT 0
-);
+    id          INT         NOT NULL AUTO_INCREMENT,
+    name        VARCHAR(50) NOT NULL,
+    student_no  VARCHAR(20) NOT NULL,
+    class_id    INT         NULL,
+    credits     INT         NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_student_no (student_no),
+    KEY idx_student_class_id (class_id),
+    CONSTRAINT fk_student_class FOREIGN KEY (class_id) REFERENCES stud_class(id) ON DELETE SET NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -------------------- course --------------------
 CREATE TABLE IF NOT EXISTS course (
-    id       INT PRIMARY KEY AUTO_INCREMENT,
+    id       INT          NOT NULL AUTO_INCREMENT,
     name     VARCHAR(100) NOT NULL,
     teacher  VARCHAR(50)  NOT NULL,
     image    VARCHAR(500) NULL,
-    credits  INT          NOT NULL DEFAULT 0
+    credits  INT          NOT NULL DEFAULT 0,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_course_name_teacher (name, teacher)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
--- -------------------- course 测试数据 --------------------
+-- -------------------- score --------------------
+CREATE TABLE IF NOT EXISTS score (
+    id          INT           NOT NULL AUTO_INCREMENT,
+    student_id  INT           NOT NULL,
+    course_id   INT           NOT NULL,
+    score       DECIMAL(5, 2) NOT NULL,
+    PRIMARY KEY (id),
+    UNIQUE KEY uk_score_student_course (student_id, course_id),
+    KEY idx_score_student_id (student_id),
+    KEY idx_score_course_id (course_id),
+    CONSTRAINT chk_score_range CHECK (score >= 0 AND score <= 100),
+    CONSTRAINT fk_score_student FOREIGN KEY (student_id) REFERENCES student(id),
+    CONSTRAINT fk_score_course FOREIGN KEY (course_id) REFERENCES course(id)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- -------------------- seed data --------------------
+INSERT INTO stud_class (myclass, grade, mymajor) VALUES
+('1班', 2024, '计算机科学与技术'),
+('2班', 2024, '软件工程')
+ON DUPLICATE KEY UPDATE
+    myclass = VALUES(myclass),
+    grade = VALUES(grade),
+    mymajor = VALUES(mymajor);
+
+INSERT INTO student (name, student_no, class_id, credits) VALUES
+('张三', '2024010101', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '计算机科学与技术' AND myclass = '1班'), 0),
+('李四', '2024010102', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '计算机科学与技术' AND myclass = '1班'), 0),
+('王五', '2024010103', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '计算机科学与技术' AND myclass = '1班'), 0),
+('赵六', '2024010104', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '计算机科学与技术' AND myclass = '1班'), 0),
+('钱七', '2024010105', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '计算机科学与技术' AND myclass = '1班'), 0),
+('孙八', '2024010201', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '软件工程' AND myclass = '2班'), 0),
+('周九', '2024010202', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '软件工程' AND myclass = '2班'), 0),
+('吴十', '2024010203', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '软件工程' AND myclass = '2班'), 0),
+('郑一', '2024010204', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '软件工程' AND myclass = '2班'), 0),
+('冯二', '2024010205', (SELECT id FROM stud_class WHERE grade = 2024 AND mymajor = '软件工程' AND myclass = '2班'), 0)
+ON DUPLICATE KEY UPDATE
+    name = VALUES(name),
+    class_id = VALUES(class_id),
+    credits = VALUES(credits);
+
 INSERT INTO course (name, teacher, image, credits) VALUES
 ('数据结构与算法', '张伟', 'https://images.unsplash.com/photo-1518770660439-4636190af475?w=400', 4),
 ('高等数学', '李娜', 'https://images.unsplash.com/photo-1596495578065-6e0763fa1178?w=400', 5),
@@ -36,77 +82,26 @@ INSERT INTO course (name, teacher, image, credits) VALUES
 ('软件工程', '孙丽', 'https://images.unsplash.com/photo-1504639725590-34d0984388bd?w=400', 3),
 ('人工智能导论', '周杰', 'https://images.unsplash.com/photo-1677442136019-21780ecad995?w=400', 3),
 ('线性代数', '吴静', 'https://images.unsplash.com/photo-1635070041078-e363dbe005cb?w=400', 3),
-('离散数学', '郑强', 'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=400', 4);
+('离散数学', '郑强', 'https://images.unsplash.com/photo-1509228627152-72ae9ae6848d?w=400', 4)
+ON DUPLICATE KEY UPDATE
+    image = VALUES(image),
+    credits = VALUES(credits);
 
--- -------------------- score --------------------
-CREATE TABLE IF NOT EXISTS score (
-    id            INT PRIMARY KEY AUTO_INCREMENT,
-    student_id    INT          NOT NULL,
-    student_name  VARCHAR(50)  NOT NULL,
-    course_id     INT          NOT NULL,
-    course_name   VARCHAR(100) NOT NULL,
-    score         DECIMAL(5,2) NOT NULL,
-    CONSTRAINT chk_score_range CHECK (score >= 0 AND score <= 100),
-    CONSTRAINT fk_score_student FOREIGN KEY (student_id) REFERENCES student(id),
-    CONSTRAINT fk_score_course  FOREIGN KEY (course_id)  REFERENCES course(id)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
-INSERT INTO score (student_id, student_name, course_id, course_name, score) VALUES
-(1, '张三', 1, '数据结构与算法', 85.50),
-(2, '李四', 2, '高等数学', 92.00),
-(3, '王五', 3, '大学英语', 78.00),
-(4, '赵六', 4, '计算机网络', 88.50),
-(5, '钱七', 5, '操作系统', 95.00),
-(6, '孙八', 6, '数据库原理', 81.00),
-(7, '周九', 7, '软件工程', 76.50),
-(8, '吴十', 8, '人工智能导论', 90.00),
-(9, '郑一', 9, '线性代数', 84.00),
-(10, '冯二', 10, '离散数学', 89.50);
-
--- -------------------- 通用 CRUD 示例 --------------------
--- 注：以下为参考语句，实际执行请根据业务需要调整条件与字段
-
--- ========== stud_class ==========
-
--- 新增
-INSERT INTO stud_class (myclass, grade, mymajor)
-VALUES ('示例班级', 2024, '示例专业');
-
--- 查询
-SELECT * FROM stud_class;
-SELECT * FROM stud_class WHERE id = ?;
-SELECT * FROM stud_class WHERE myclass LIKE '%关键字%';
-SELECT * FROM stud_class ORDER BY grade DESC, id ASC;
-
--- 修改
-UPDATE stud_class
-SET myclass = ?, grade = ?, mymajor = ?
-WHERE id = ?;
-
--- 删除
-DELETE FROM stud_class WHERE id = ?;
-
--- ========== student ==========
-
--- 新增
-INSERT INTO student (name, student_no, class_id, credits)
-VALUES ('示例姓名', '2024010199', 1, 0);
-
--- 查询
-SELECT * FROM student;
-SELECT * FROM student WHERE id = ?;
-SELECT * FROM student WHERE student_no = ?;
-SELECT * FROM student WHERE name LIKE '%关键字%';
-SELECT * FROM student WHERE class_id = ?;
-SELECT s.*, c.myclass, c.mymajor
-FROM student s
-LEFT JOIN stud_class c ON s.class_id = c.id
-ORDER BY s.id ASC;
-
--- 修改
-UPDATE student
-SET name = ?, student_no = ?, class_id = ?, credits = ?
-WHERE id = ?;
-
--- 删除
-DELETE FROM student WHERE id = ?;
+INSERT INTO score (student_id, course_id, score)
+SELECT s.id, c.id, seed.score
+FROM (
+    SELECT '2024010101' AS student_no, '数据结构与算法' AS course_name, CAST(85.50 AS DECIMAL(5, 2)) AS score
+    UNION ALL SELECT '2024010102', '高等数学', 92.00
+    UNION ALL SELECT '2024010103', '大学英语', 78.00
+    UNION ALL SELECT '2024010104', '计算机网络', 88.50
+    UNION ALL SELECT '2024010105', '操作系统', 95.00
+    UNION ALL SELECT '2024010201', '数据库原理', 81.00
+    UNION ALL SELECT '2024010202', '软件工程', 76.50
+    UNION ALL SELECT '2024010203', '人工智能导论', 90.00
+    UNION ALL SELECT '2024010204', '线性代数', 84.00
+    UNION ALL SELECT '2024010205', '离散数学', 89.50
+) seed
+JOIN student s ON s.student_no = seed.student_no
+JOIN course c ON c.name = seed.course_name
+ON DUPLICATE KEY UPDATE
+    score = VALUES(score);

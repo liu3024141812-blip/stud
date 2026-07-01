@@ -13,20 +13,24 @@ import java.util.List;
 public class ScoreDao {
 
     public int insert(Score score) throws SQLException {
-        String sql = "insert into score (student_id, student_name, course_id, course_name, score) values (?,?,?,?,?)";
+        String sql = "insert into score (student_id, course_id, score) values (?,?,?)";
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, score.getStudentId());
-            statement.setString(2, score.getStudentName());
-            statement.setInt(3, score.getCourseId());
-            statement.setString(4, score.getCourseName());
-            statement.setBigDecimal(5, score.getScore());
+            statement.setInt(2, score.getCourseId());
+            statement.setBigDecimal(3, score.getScore());
             return statement.executeUpdate();
         }
     }
 
     public List<Score> findAll() throws SQLException {
-        String sql = "select * from score";
+        String sql = """
+                select sc.id, sc.student_id, s.name as student_name, sc.course_id, c.name as course_name, sc.score
+                from score sc
+                join student s on sc.student_id = s.id
+                join course c on sc.course_id = c.id
+                order by sc.id
+                """;
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
@@ -55,15 +59,13 @@ public class ScoreDao {
     }
 
     public int update(Score score) throws SQLException {
-        String sql = "update score set student_id=?, student_name=?, course_id=?, course_name=?, score=? where id=?";
+        String sql = "update score set student_id=?, course_id=?, score=? where id=?";
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, score.getStudentId());
-            statement.setString(2, score.getStudentName());
-            statement.setInt(3, score.getCourseId());
-            statement.setString(4, score.getCourseName());
-            statement.setBigDecimal(5, score.getScore());
-            statement.setInt(6, score.getId());
+            statement.setInt(2, score.getCourseId());
+            statement.setBigDecimal(3, score.getScore());
+            statement.setInt(4, score.getId());
             return statement.executeUpdate();
         }
     }

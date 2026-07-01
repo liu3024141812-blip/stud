@@ -20,7 +20,7 @@ public class MyTest {
 
         Class.forName("com.mysql.cj.jdbc.Driver");
         String username="root";
-        String password="liu3024141812";
+        String password="302414";
         String url="jdbc:mysql://localhost:3306/stud";
         Connection connection= DriverManager.getConnection(url,username,password);
 
