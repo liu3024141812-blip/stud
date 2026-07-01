@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.BarChart?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="18.0" styleClass="dashboard-page" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.DashboardController">
+   <children>
+      <VBox spacing="18.0" styleClass="dashboard-hero">
+         <children>
+            <Label styleClass="section-title" text="控制台" />
+            <GridPane hgap="18.0" vgap="18.0">
+               <columnConstraints>
+                  <ColumnConstraints percentWidth="25.0" />
+                  <ColumnConstraints percentWidth="25.0" />
+                  <ColumnConstraints percentWidth="25.0" />
+                  <ColumnConstraints percentWidth="25.0" />
+               </columnConstraints>
+               <children>
+                  <VBox spacing="6.0" styleClass="dashboard-stat-card stat-purple" GridPane.columnIndex="0">
+                     <children>
+                        <Label styleClass="stat-label" text="学生总数" />
+                        <Label fx:id="studentCountLabel" styleClass="stat-value" text="150" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="6.0" styleClass="dashboard-stat-card stat-blue" GridPane.columnIndex="1">
+                     <children>
+                        <Label styleClass="stat-label" text="班级总数" />
+                        <Label fx:id="classCountLabel" styleClass="stat-value" text="12" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="6.0" styleClass="dashboard-stat-card stat-orange" GridPane.columnIndex="2">
+                     <children>
+                        <Label styleClass="stat-label" text="课程总数" />
+                        <Label fx:id="courseCountLabel" styleClass="stat-value" text="18" />
+                     </children>
+                  </VBox>
+                  <VBox spacing="6.0" styleClass="dashboard-stat-card stat-green" GridPane.columnIndex="3">
+                     <children>
+                        <Label styleClass="stat-label" text="平均分" />
+                        <Label fx:id="averageScoreLabel" styleClass="stat-value" text="86.5" />
+                     </children>
+                  </VBox>
+               </children>
+            </GridPane>
+         </children>
+      </VBox>
+
+      <GridPane hgap="22.0" vgap="22.0" VBox.vgrow="ALWAYS">
+         <columnConstraints>
+            <ColumnConstraints percentWidth="62.0" />
+            <ColumnConstraints percentWidth="38.0" />
+         </columnConstraints>
+         <rowConstraints>
+            <RowConstraints percentHeight="52.0" />
+            <RowConstraints percentHeight="48.0" />
+         </rowConstraints>
+         <children>
+            <VBox spacing="12.0" styleClass="dashboard-panel" GridPane.columnIndex="0" GridPane.rowIndex="0">
+               <children>
+                  <HBox alignment="CENTER_LEFT">
+                     <children>
+                        <Label styleClass="dashboard-panel-title" text="成绩分布" />
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Label styleClass="section-note" text="按分数段统计" />
+                     </children>
+                  </HBox>
+                  <BarChart fx:id="scoreRangeChart" animated="false" legendVisible="false" VBox.vgrow="ALWAYS">
+                     <xAxis>
+                        <CategoryAxis side="BOTTOM" />
+                     </xAxis>
+                     <yAxis>
+                        <NumberAxis side="LEFT" />
+                     </yAxis>
+                  </BarChart>
+               </children>
+            </VBox>
+
+            <VBox alignment="CENTER" spacing="12.0" styleClass="dashboard-panel" GridPane.columnIndex="1" GridPane.rowIndex="0">
+               <children>
+                  <Label styleClass="dashboard-panel-title" text="成绩状态" />
+                  <PieChart fx:id="passStatusChart" labelsVisible="false" legendVisible="true" VBox.vgrow="ALWAYS" />
+               </children>
+            </VBox>
+
+            <VBox spacing="12.0" styleClass="dashboard-panel" GridPane.columnIndex="0" GridPane.rowIndex="1">
+               <children>
+                  <Label styleClass="dashboard-panel-title" text="优秀学生 Top 5" />
+                  <TableView fx:id="starStudentTable" VBox.vgrow="ALWAYS">
+                     <columns>
+                        <TableColumn fx:id="studentNameColumn" prefWidth="160.0" text="姓名" />
+                        <TableColumn fx:id="studentNoColumn" prefWidth="160.0" text="学号" />
+                        <TableColumn fx:id="studentClassColumn" prefWidth="150.0" text="班级" />
+                        <TableColumn fx:id="averageScoreColumn" prefWidth="120.0" text="平均分" />
+                        <TableColumn fx:id="creditColumn" prefWidth="120.0" text="学分" />
+                     </columns>
+                  </TableView>
+               </children>
+            </VBox>
+
+            <VBox spacing="14.0" styleClass="dashboard-panel" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <children>
+                  <Label styleClass="dashboard-panel-title" text="学业预警" />
+                  <ListView fx:id="warningList" VBox.vgrow="ALWAYS" />
+                  <HBox alignment="CENTER_RIGHT" spacing="10.0">
+                     <children>
+                        <Button mnemonicParsing="false" onAction="#openScores" styleClass="secondary-button" text="查看成绩" />
+                        <Button mnemonicParsing="false" onAction="#openStudents" styleClass="primary-button" text="学生管理" />
+                     </children>
+                     <padding>
+                        <Insets top="2.0" />
+                     </padding>
+                  </HBox>
+               </children>
+            </VBox>
+         </children>
+      </GridPane>
+   </children>
+</VBox>
