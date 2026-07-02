@@ -3,6 +3,7 @@ package com.example.stud.controller;
 import com.example.stud.entity.Score;
 import com.example.stud.service.ScoreService;
 import com.example.stud.service.ServiceException;
+import com.example.stud.util.SceneUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -35,7 +36,7 @@ public class ScoreController {
     private TableColumn<Score, Integer> id;
 
     @FXML
-    private TableColumn<Score, String> score;
+    private TableColumn<Score, Double> score;
 
     @FXML
     private Button deleteButton;
@@ -139,6 +140,7 @@ public class ScoreController {
 
     @FXML
     void search(ActionEvent event) {
+        // 根据学生或课程关键字过滤已缓存的成绩列表。
         String normalizedKeyword = this.keywordField.getText() == null ? "" : this.keywordField.getText().trim().toLowerCase();
         if (normalizedKeyword.isEmpty()) {
             this.results.setItems(FXCollections.observableList(this.scores));

@@ -5,6 +5,7 @@ CREATE TABLE IF NOT EXISTS stud_class (
     grade     INT          NOT NULL,
     mymajor   VARCHAR(100) NOT NULL,
     PRIMARY KEY (id),
+    -- 防止同一年级、同一专业下重复创建相同班级。
     UNIQUE KEY uk_class_grade_major_name (grade, mymajor, myclass)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -13,12 +14,14 @@ CREATE TABLE IF NOT EXISTS student (
     id          INT         NOT NULL AUTO_INCREMENT,
     name        VARCHAR(50) NOT NULL,
     student_no  VARCHAR(20) NOT NULL,
-    class_id    INT         NULL,
+    class_id    INT         NOT NULL,
     credits     INT         NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
+    -- 保证每个学号唯一。
     UNIQUE KEY uk_student_no (student_no),
     KEY idx_student_class_id (class_id),
-    CONSTRAINT fk_student_class FOREIGN KEY (class_id) REFERENCES stud_class(id) ON DELETE SET NULL
+    -- 保证学生关联到已存在的班级；班级删除后自动清空学生班级。
+    CONSTRAINT fk_student_class FOREIGN KEY (class_id) REFERENCES stud_class(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- -------------------- course --------------------
@@ -29,6 +32,7 @@ CREATE TABLE IF NOT EXISTS course (
     image    VARCHAR(500) NULL,
     credits  INT          NOT NULL DEFAULT 0,
     PRIMARY KEY (id),
+    -- 防止同一教师重复创建同名课程。
     UNIQUE KEY uk_course_name_teacher (name, teacher)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
@@ -39,10 +43,13 @@ CREATE TABLE IF NOT EXISTS score (
     course_id   INT           NOT NULL,
     score       DECIMAL(5, 2) NOT NULL,
     PRIMARY KEY (id),
+    -- 保证同一学生同一课程只有一条成绩记录。
     UNIQUE KEY uk_score_student_course (student_id, course_id),
     KEY idx_score_student_id (student_id),
     KEY idx_score_course_id (course_id),
+    -- 限制考试成绩必须在 0 到 100 之间。
     CONSTRAINT chk_score_range CHECK (score >= 0 AND score <= 100),
+    -- 保证成绩记录关联到已存在的学生和课程。
     CONSTRAINT fk_score_student FOREIGN KEY (student_id) REFERENCES student(id),
     CONSTRAINT fk_score_course FOREIGN KEY (course_id) REFERENCES course(id)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;

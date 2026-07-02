@@ -7,20 +7,6 @@ public class Course {
     private String image;
     private Integer credits;
 
-    // 用于调试
-    /*
-    @Override
-    public String toString() {
-        return "Course{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", teacher='" + teacher + '\'' +
-                ", image='" + image + '\'' +
-                ", credits=" + credits +
-                '}';
-    }
-    */
-
     public Integer getId() {
         return id;
     }

@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="390.0" prefWidth="560.0" styleClass="form-root" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.ScoreInsertController">
+<VBox alignment="CENTER" prefHeight="390.0" prefWidth="700.0" styleClass="form-root" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.ScoreInsertController">
    <children>
       <VBox spacing="20.0" styleClass="form-card">
          <children>
@@ -16,9 +16,9 @@
             <GridPane hgap="18.0" vgap="14.0">
                <children>
                   <Label styleClass="field-label" text="学生" />
-                  <ComboBox fx:id="studentId" prefWidth="340.0" GridPane.columnIndex="1" />
+                  <ComboBox fx:id="studentId" prefWidth="480.0" GridPane.columnIndex="1" />
                   <Label styleClass="field-label" text="课程" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="courseId" prefWidth="340.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="courseId" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label styleClass="field-label" text="考试成绩" GridPane.rowIndex="2" />
                   <TextField fx:id="score" promptText="请输入分数" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                </children>

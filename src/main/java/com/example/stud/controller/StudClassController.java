@@ -3,6 +3,7 @@ package com.example.stud.controller;
 import com.example.stud.entity.StudClass;
 import com.example.stud.service.ServiceException;
 import com.example.stud.service.StudClassService;
+import com.example.stud.util.SceneUtil;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -133,6 +134,7 @@ public class StudClassController {
 
     @FXML
     void search(ActionEvent event) {
+        // 根据年级、专业或班级名称关键字过滤已缓存的班级列表。
         String normalizedKeyword = this.keywordField.getText() == null ? "" : this.keywordField.getText().trim().toLowerCase();
         if (normalizedKeyword.isEmpty()) {
             this.results.setItems(FXCollections.observableList(this.studClasses));

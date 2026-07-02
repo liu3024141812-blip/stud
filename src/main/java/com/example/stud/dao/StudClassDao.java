@@ -16,6 +16,7 @@ public class StudClassDao {
     // 新增
     public int insert(StudClass studClass) throws SQLException {
         String sql = "insert into stud_class (myclass, grade, mymajor) values (?,?,?)";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, studClass.getName());
@@ -29,6 +30,7 @@ public class StudClassDao {
     // 查询 select * from stud_class
     public List<StudClass> findAll() throws SQLException {
         String sql = "select *  from stud_class";
+        // 使用 try-with-resources 自动关闭班级查询的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
@@ -56,6 +58,7 @@ public class StudClassDao {
     // 删除
     public int delete(Integer id) throws SQLException {
         String sql = "delete from stud_class where id = ?";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -66,6 +69,7 @@ public class StudClassDao {
     // 修改
     public int update(StudClass studClass) throws SQLException {
         String sql = "update stud_class set myclass = ?, grade = ?, mymajor = ? where id = ?";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, studClass.getName());

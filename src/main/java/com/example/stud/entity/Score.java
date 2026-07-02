@@ -1,14 +1,12 @@
 package com.example.stud.entity;
 
-import java.math.BigDecimal;
-
 public class Score {
     private Integer id;
     private Integer studentId;
     private String studentName;
     private Integer courseId;
     private String courseName;
-    private BigDecimal score;
+    private double score;
 
     // 用于调试
     /*
@@ -65,11 +63,11 @@ public class Score {
         this.courseName = courseName;
     }
 
-    public BigDecimal getScore() {
+    public double getScore() {
         return score;
     }
 
-    public void setScore(BigDecimal score) {
+    public void setScore(double score) {
         this.score = score;
     }
 }

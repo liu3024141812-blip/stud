@@ -8,7 +8,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 
-<VBox alignment="CENTER" prefHeight="430.0" prefWidth="560.0" styleClass="form-root" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.ScoreUpdateController">
+<VBox alignment="CENTER" prefHeight="430.0" prefWidth="700.0" styleClass="form-root" stylesheets="@app.css" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.stud.controller.ScoreUpdateController">
    <children>
       <VBox spacing="20.0" styleClass="form-card">
          <children>
@@ -18,9 +18,9 @@
                   <Label styleClass="field-label" text="ID" />
                   <Label fx:id="id" text="0" GridPane.columnIndex="1" />
                   <Label styleClass="field-label" text="学生" GridPane.rowIndex="1" />
-                  <ComboBox fx:id="studentId" prefWidth="340.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                  <ComboBox fx:id="studentId" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                   <Label styleClass="field-label" text="课程" GridPane.rowIndex="2" />
-                  <ComboBox fx:id="courseId" prefWidth="340.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                  <ComboBox fx:id="courseId" prefWidth="480.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                   <Label styleClass="field-label" text="考试成绩" GridPane.rowIndex="3" />
                   <TextField fx:id="score" GridPane.columnIndex="1" GridPane.rowIndex="3" />
                </children>

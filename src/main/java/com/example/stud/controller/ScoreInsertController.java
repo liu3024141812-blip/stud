@@ -14,9 +14,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.ListCell;
+import javafx.scene.control.OverrunStyle;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 
-import java.math.BigDecimal;
 import java.util.List;
 
 public class ScoreInsertController {
@@ -74,7 +75,7 @@ public class ScoreInsertController {
             score.setStudentName(student.getName());
             score.setCourseId(course.getId());
             score.setCourseName(course.getName());
-            score.setScore(new BigDecimal(text.trim()));
+            score.setScore(Double.parseDouble(text.trim()));
             scoreService.insert(score);
             if (runnable != null) {
                 runnable.run();
@@ -89,29 +90,69 @@ public class ScoreInsertController {
     @FXML
     public void initialize() {
         // 加载学生
-        List<Student> students = studentService.findAll();
-        this.studentId.setItems(FXCollections.observableList(students));
-        this.studentId.setCellFactory(param -> new ListCell<>() {
-            @Override
-            protected void updateItem(Student item, boolean empty) {
-                super.updateItem(item, empty);
-                setText(empty || item == null ? null
-                        : item.getId() + " - " + item.getName() + " (" + item.getStudentNo() + ")");
-            }
-        });
-        this.studentId.setButtonCell(this.studentId.getCellFactory().call(null));
+            List<Student> students = studentService.findAll();
+            this.studentId.setItems(FXCollections.observableList(students));
+            this.studentId.setConverter(new StringConverter<>() {
+                @Override
+                public String toString(Student student) {
+                    return formatStudent(student);
+                }
+
+                @Override
+                public Student fromString(String string) {
+                    return null;
+                }
+            });
+            this.studentId.setVisibleRowCount(8);
+            this.studentId.setCellFactory(param -> createStudentCell());
+            this.studentId.setButtonCell(createStudentCell());
 
         // 加载课程
         List<Course> courses = courseService.findAll();
         this.courseId.setItems(FXCollections.observableList(courses));
-        this.courseId.setCellFactory(param -> new ListCell<>() {
+        this.courseId.setConverter(new StringConverter<>() {
+            @Override
+            public String toString(Course course) {
+                return formatCourse(course);
+            }
+
+            @Override
+            public Course fromString(String string) {
+                return null;
+            }
+        });
+        this.courseId.setVisibleRowCount(8);
+        this.courseId.setCellFactory(param -> createCourseCell());
+        this.courseId.setButtonCell(createCourseCell());
+    }
+
+    private ListCell<Student> createStudentCell() {
+        return new ListCell<>() {
+            @Override
+            protected void updateItem(Student item, boolean empty) {
+                super.updateItem(item, empty);
+                setText(empty || item == null ? null : formatStudent(item));
+                setTextOverrun(OverrunStyle.CLIP);
+            }
+        };
+    }
+
+    private ListCell<Course> createCourseCell() {
+        return new ListCell<>() {
             @Override
             protected void updateItem(Course item, boolean empty) {
                 super.updateItem(item, empty);
-                setText(empty || item == null ? null
-                        : item.getId() + " - " + item.getName() + " (" + item.getTeacher() + ")");
+                setText(empty || item == null ? null : formatCourse(item));
+                setTextOverrun(OverrunStyle.CLIP);
             }
-        });
-        this.courseId.setButtonCell(this.courseId.getCellFactory().call(null));
+        };
+    }
+
+    private String formatStudent(Student student) {
+        return student == null ? "" : student.getName() + " (" + student.getStudentNo() + ")";
+    }
+
+    private String formatCourse(Course course) {
+        return course == null ? "" : course.getName() + " (" + course.getTeacher() + ")";
     }
 }

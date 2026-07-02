@@ -61,6 +61,10 @@ public class StudentUpdateController {
             student.setName(this.name.getText());
             student.setStudentNo(this.studentNo.getText());
             StudClass selectedClass = this.classId.getSelectionModel().getSelectedItem();
+            if (selectedClass == null) {
+                new Alert(Alert.AlertType.INFORMATION, "请选择学生班级").showAndWait();
+                return;
+            }
             student.setClassId(selectedClass == null ? null : selectedClass.getId());
             student.setCredits(this.credits.getText() == null || this.credits.getText().isBlank()
                     ? 0 : Integer.valueOf(this.credits.getText()));

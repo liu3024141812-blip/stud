@@ -3,7 +3,6 @@ package com.example.stud.service;
 import com.example.stud.dao.ScoreDao;
 import com.example.stud.entity.Score;
 
-import java.math.BigDecimal;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -64,11 +63,8 @@ public class ScoreService {
         if (score.getCourseId() == null) {
             throw new ServiceException("课程ID不能为空");
         }
-        if (score.getScore() == null) {
-            throw new ServiceException("考试成绩不能为空");
-        }
-        BigDecimal value = score.getScore();
-        if (value.compareTo(BigDecimal.ZERO) < 0 || value.compareTo(new BigDecimal("100")) > 0) {
+        double value = score.getScore();
+        if (value < 0 || value > 100) {
             throw new ServiceException("考试成绩必须在 0-100 之间");
         }
     }

@@ -14,6 +14,7 @@ public class CourseDao {
 
     public int insert(Course course) throws SQLException {
         String sql = "insert into course (name, teacher, image, credits) values (?,?,?,?)";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, course.getName());
@@ -26,6 +27,7 @@ public class CourseDao {
 
     public List<Course> findAll() throws SQLException {
         String sql = "select * from course";
+        // 使用 try-with-resources 自动关闭课程查询的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
@@ -46,6 +48,7 @@ public class CourseDao {
 
     public int delete(Integer id) throws SQLException {
         String sql = "delete from course where id = ?";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -55,6 +58,7 @@ public class CourseDao {
 
     public int update(Course course) throws SQLException {
         String sql = "update course set name = ?, teacher = ?, image = ?, credits = ? where id = ?";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setString(1, course.getName());

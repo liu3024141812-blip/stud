@@ -1,5 +1,6 @@
 package com.example.stud.controller;
 
+import com.example.stud.util.SceneUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -95,6 +96,7 @@ public class AppContentController {
     }
 
     public void openDashboardPage() {
+        // 打开汇总学生、课程、成绩和预警信息的首页。
         this.navigateTo("/com/example/stud/dashboard-view.fxml");
         this.setActiveButton(this.dashboardButton);
     }

@@ -6,19 +6,6 @@ public class StudClass {
     private String major;
     private String name;
 
-    // 用于调试
-    /*
-    @Override
-    public String toString() {
-        return "StudClass{" +
-                "id=" + id +
-                ", grade=" + grade +
-                ", major='" + major + '\'' +
-                ", name='" + name + '\'' +
-                '}';
-    }
-    */
-
     public Integer getId() {
         return id;
     }

@@ -1,5 +1,6 @@
 package com.example.stud.controller;
 
+import com.example.stud.util.SceneUtil;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

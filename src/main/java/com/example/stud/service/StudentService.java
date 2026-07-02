@@ -8,7 +8,6 @@ import java.util.List;
 
 /**
  * 学生业务层：负责参数校验、调用 DAO、捕获并包装异常。
- * Controller 不再直接持有 DAO，也无需 throws SQLException。
  */
 public class StudentService {
 
@@ -63,6 +62,9 @@ public class StudentService {
         }
         if (student.getStudentNo() == null || student.getStudentNo().isBlank()) {
             throw new ServiceException("学号不能为空");
+        }
+        if (student.getClassId() == null || student.getClassId() <= 0) {
+            throw new ServiceException("请选择学生班级");
         }
     }
 }

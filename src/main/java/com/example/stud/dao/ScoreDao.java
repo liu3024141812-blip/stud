@@ -14,17 +14,19 @@ public class ScoreDao {
 
     public int insert(Score score) throws SQLException {
         String sql = "insert into score (student_id, course_id, score) values (?,?,?)";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, score.getStudentId());
             statement.setInt(2, score.getCourseId());
-            statement.setBigDecimal(3, score.getScore());
+            statement.setDouble(3, score.getScore());
             return statement.executeUpdate();
         }
     }
 
     public boolean existsByStudentAndCourse(Integer studentId, Integer courseId) throws SQLException {
         String sql = "select 1 from score where student_id = ? and course_id = ? limit 1";
+        // 使用 try-with-resources 自动关闭成绩重复检查的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, studentId);
@@ -43,6 +45,7 @@ public class ScoreDao {
                 join course c on sc.course_id = c.id
                 order by sc.id
                 """;
+        // 使用 try-with-resources 自动关闭成绩查询的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql);
              ResultSet resultSet = statement.executeQuery()) {
@@ -54,7 +57,7 @@ public class ScoreDao {
                 score.setStudentName(resultSet.getString("student_name"));
                 score.setCourseId(resultSet.getInt("course_id"));
                 score.setCourseName(resultSet.getString("course_name"));
-                score.setScore(resultSet.getBigDecimal("score"));
+                score.setScore(resultSet.getDouble("score"));
                 scores.add(score);
             }
             return scores;
@@ -63,6 +66,7 @@ public class ScoreDao {
 
     public int delete(Integer id) throws SQLException {
         String sql = "delete from score where id = ?";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, id);
@@ -72,11 +76,12 @@ public class ScoreDao {
 
     public int update(Score score) throws SQLException {
         String sql = "update score set student_id=?, course_id=?, score=? where id=?";
+        // 使用 try-with-resources 自动关闭本次数据库操作的 JDBC 资源。
         try (Connection connection = DbUtil.getConnection();
              PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setInt(1, score.getStudentId());
             statement.setInt(2, score.getCourseId());
-            statement.setBigDecimal(3, score.getScore());
+            statement.setDouble(3, score.getScore());
             statement.setInt(4, score.getId());
             return statement.executeUpdate();
         }
